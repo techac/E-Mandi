@@ -20,6 +20,20 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
+    connection.query('\
+    CREATE TABLE IF NOT EXISTS`' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
+        `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, \
+        `username` VARCHAR(20) NOT NULL, \
+        `password` CHAR(60) NOT NULL, \
+        `role` CHAR(60) NOT NULL,\
+        `state` CHAR(60) NOT NULL,\
+            PRIMARY KEY (`id`), \
+        UNIQUE INDEX `id_UNIQUE` (`id` ASC), \
+        UNIQUE INDEX `username_UNIQUE` (`username` ASC) \
+    )',function(err, result){
+        if(err) throw err;
+        console.log("Users Table created Succesfully");
+    });
     connection.query("CREATE TABLE IF NOT EXISTS Wholeseller ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
@@ -30,7 +44,8 @@ module.exports = function(passport) {
         if(err) throw err;
         console.log("Wholeseller database created");
     });
-
+    // `img` blob ,\
+    // `file_name` varchar(45) collate latin1_general_ci ,\
     
 
     passport.serializeUser(function(user, done) {
@@ -71,12 +86,15 @@ module.exports = function(passport) {
                     // create the user
                     var newUserMysql = {
                         username: username,
-                        password: bcrypt.hashSync(password, null, null)  // use the generateHash function in our user model
+                        password: bcrypt.hashSync(password, null, null),
+                        role : req.body.role,
+                        state: req.body.state,
+                          // use the generateHash function in our user model
                     };
 
-                    var insertQuery = "INSERT INTO users ( username, password ) values (?,?)";
+                    var insertQuery = "INSERT INTO users ( username, password,role,state ) values (?,?,?,?)";
 
-                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password],function(err, rows) {
+                    connection.query(insertQuery,[newUserMysql.username, newUserMysql.password, newUserMysql.role, newUserMysql.state],function(err, rows) {
                         newUserMysql.id = rows.insertId;
 
                         return done(null, newUserMysql);

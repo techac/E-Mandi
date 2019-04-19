@@ -1,27 +1,67 @@
 // app/routes.js
 
-
+var fs = require('fs');
+var results;
 var mysql = require('mysql');
 var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
 
 connection.query('USE ' + dbconfig.database);
-module.exports = function(app, passport, url, path) {
+module.exports = function(app, passport, url, path){
 
 	// =====================================
 	// HOME PAGE (with login links) ========
 	// =====================================
+	
+	
 	app.get('/', function(req, res) {
 		var isLoggedIn;
+		var results=[];
 		if(req.isAuthenticated()){
 			isLoggedIn = 1;
 		}
 		else{
 			isLoggedIn = 0;
 		}
-		console.log(isLoggedIn);
-		res.render('index.ejs',{authenticated:isLoggedIn}); // load the index.ejs file
+		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result, fields){
+			if(err) throw err;
+			res.render('index.ejs',{authenticated:isLoggedIn,results: result,req:req }); // load the index.ejs file
+			// setValue(result);
+			// setTimeout(function(){
+			// 	results =result;
+			// 	alert(results);
+			// }, Math.random()*2000);
+			// results = result;
+			console.log(result);
+		});
+		
+		// console.log(results);
+		// results = foo();
+		// console.log(dict.results);
+		// console.log(listings);
+
+	
+		// console.log(isLoggedIn);
+		
+	});
+
+	app.get("/makeTransaction/:title/:username",function(req,res){
+		var title = req.params.title;
+		var username = req.params.username;
+		console.log(username);
+		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
+			if(err) throw err;
+			connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE id='"+ result[0].id + "' and title='"+ title+ "'", function(err,result){
+				if(err) throw err;
+				connection.query("DELETE FROM Wholeseller where stock<=0",function(err,result){
+					console.log(result);
+					res.redirect("/");
+				});
+				
+			})   
+		});
+		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
 
 	// =====================================
@@ -60,7 +100,6 @@ module.exports = function(app, passport, url, path) {
 		// render the page and pass in any flash data if it exists
 		res.render('signup.ejs', { message: req.flash('signupMessage') });
 	});
-
 	// process the signup form
 	app.post('/signup', passport.authenticate('local-signup', {
 		successRedirect : '/profile', // redirect to the secure profile section
@@ -108,12 +147,15 @@ module.exports = function(app, passport, url, path) {
 	});
 
 	app.post('/wholeSellerListing', isLoggedIn, function(req,res){
-		console.log(req.user);
-		connection.query("INSERT INTO Wholeseller (id , title, price, stock) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
+		// console.log(req.body.img);
+		// var img = fs.readFileSync(req.body.img);
+		connection.query("INSERT INTO Wholeseller (id , title, price, stock ) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
 			if(err) throw err;
 			console.log("Entry Successsfully created");
 		});
 		res.send("Entry Successful");
+		// res.redirect('/');
+		
 
 	});
 
@@ -123,10 +165,7 @@ module.exports = function(app, passport, url, path) {
 		res.sendFile(path.join(__dirname, '../views' + pathName));
 	});
 
-
-};
-
-
+}
 
 // route middleware to make sure
 function isLoggedIn(req, res, next) {
@@ -134,7 +173,6 @@ function isLoggedIn(req, res, next) {
 	// if user is authenticated in the session, carry on
 	if (req.isAuthenticated())
 		return next();
-
 	// if they aren't redirect them to the home page
 	res.redirect('/');
-}
+};

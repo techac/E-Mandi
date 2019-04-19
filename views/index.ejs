@@ -49,18 +49,26 @@
 										<a class="dropdown-item" href="/login">Login</a>
 								<% } else {%>
 										<a class="dropdown-item" href="/logout">Signout</a>
-										<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">List A Product</a></li>
+									  <a href="/wholeS<div class="rating">
+												<p class="text-right">
+													<span class="ion-ios-star-outline"></span>
+													<span class="ion-ios-star-outline"></span>
+													<span class="ion-ios-star-outline"></span>
+													<span class="ion-ios-star-outline"></span>
+													<span class="ion-ios-star-outline"></span>
+												</p>
+											</div>ellerListing" class="dropdown-item">List Product</a></li>
 								<% } %>
               </div>
             </li>
 	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
-	          <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li>
+	          <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
 						<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
 						<%if((authenticated<=0)){%>
 							<li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
 							<% } else {%>
 								<li class="nav-item"><a href="/logout" class="nav-link">Signout</a></li>
-								<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">List A Product</a></li>
+								<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">List Product</a></li>
 								<% } %>
 						<li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 						
@@ -96,62 +104,46 @@
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
-          	<h1 class="big">Trending</h1>
-            <h2 class="mb-4">Trending</h2>
+          	<h1 class="big">Your Listings</h1>
+            <h2 class="mb-4">Your Listings</h2>
           </div>
         </div>
     		<div class="row">
     			<div class="col-md-12">
     				<div class="product-slider owl-carousel ftco-animate">
-    					<div class="item">
+    					<% for(var i=0;i<results.length;i++){ %>
+								<% if(req.user != undefined){ %>
+								<% if(results[i].username == req.user.username){ %>
+									<div class="item">
+											<div class="product">
+												<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template">
+													<span class="status">30%</span>
+												</a>
+												<div class="text pt-3 px-3">
+													<h3><a href="#"> <%= results[i].title %></a></h3>
+													<div class="d-flex">
+														<div class="pricing">
+															<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
+														</div>
+														<!-- <div class="rating">
+															<p class="text-right">
+																<span class="ion-ios-star-outline"></span>
+																<span class="ion-ios-star-outline"></span>
+																<span class="ion-ios-star-outline"></span>
+																<span class="ion-ios-star-outline"></span>
+																<span class="ion-ios-star-outline"></span>
+															</p>
+														</div> -->
+													</div>
+												</div>
+											</div>
+										</div>
+										<% } %>
+									<% } %>
+							<% } %>
+	    				<!-- <div class="item">
 		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-1.jpg" alt="Colorlib Template">
-		    						<span class="status">30%</span>
-		    					</a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-			    						</div>
-			    						<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-		    						</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-3.jpg" alt="Colorlib Template"></a>
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
 		    					<div class="text pt-3 px-3">
 		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
 		    						<div class="d-flex">
@@ -173,7 +165,14 @@
 	    				</div>
 	    				<div class="item">
 		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-4.jpg" alt="Colorlib Template"></a>
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+				    						<p clas<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
 		    					<div class="text pt-3 px-3">
 		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
 		    						<div class="d-flex">
@@ -195,7 +194,51 @@
 	    				</div>
 	    				<div class="item">
 		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="images/product-5.jpg" alt="Colorlib Template">
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+				    						<p class="price"><span>$120.00</span></p>
+				    					</div>
+				    					<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+			    					</div>
+		    					</div>
+		    				</div>
+	    				</div>
+	    				<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+				    						<p class="price"><span>$120.00</span></p>
+				    					</div>
+				    					<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+			    					</div>
+		    					</div>
+		    				</div>
+	    				</div>
+	    				<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img src="images/gobhi.jpg" alt="Colorlib Template">
 			    					<span class="status">30%</span>
 			    				</a>
 		    					<div class="text pt-3 px-3">
@@ -238,8 +281,90 @@
 			    					</div>
 		    					</div>
 		    				</div>
+	    				</div>s="price"><span>$120.00</span></p>
+				    					</div>
+				    					<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+			    					</div>
+		    					</div>
+		    				</div>
 	    				</div>
-    				</div>
+	    				<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+				    						<p class="price"><span>$120.00</span></p>
+				    					</div>
+				    					<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+			    					</div>
+		    					</div>
+		    				</div>
+	    				</div>
+	    				<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img src="images/gobhi.jpg" alt="Colorlib Template">
+			    					<span class="status">30%</span>
+			    				</a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
+			    						</div>
+			    						<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+		    						</div>
+		    					</div>
+		    				</div>
+	    				</div>
+	    				<div class="item">
+		    				<div class="product">
+		    					<a href="#" class="img-prod"><img src="images/product-6.jpg" alt="Colorlib Template"></a>
+		    					<div class="text pt-3 px-3">
+		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+		    						<div class="d-flex">
+		    							<div class="pricing">
+				    						<p class="price"><span>$120.00</span></p>
+				    					</div>
+				    					<div class="rating">
+			    							<p class="text-right">
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    								<span class="ion-ios-star-outline"></span>
+			    							</p>
+			    						</div>
+			    					</div>
+		    					</div>
+		    				</div>
+	    				</div> 
+    				</div> -->
     			</div>
     		</div>
     	</div>
@@ -279,16 +404,18 @@
     	</div>
     	<div class="container-fluid">
     		<div class="row">
+					<% for(var i=0;i<results.length;i++){ %>
     			<div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-1.jpg" alt="Colorlib Template"></a>
+    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
     					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
+								<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+								<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
     						<div class="d-flex">
     							<div class="pricing">
-		    						<p class="price"><span>$120.00</span></p>
+		    						<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
 		    					</div>
-		    					<div class="rating">
+		    					<!-- <div class="rating">
 	    							<p class="text-right">
 	    								<span class="ion-ios-star-outline"></span>
 	    								<span class="ion-ios-star-outline"></span>
@@ -296,17 +423,18 @@
 	    								<span class="ion-ios-star-outline"></span>
 	    								<span class="ion-ios-star-outline"></span>
 	    							</p>
-	    						</div>
+	    						</div> -->
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
+    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+    							<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
     						</p>
     					</div>
     				</div>
-    			</div>
-    			<div class="col-sm col-md-6 col-lg ftco-animate">
+					</div>
+					<% } %>
+    			<!-- <div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
     					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template"></a>
     					<div class="text py-3 px-3">
@@ -386,7 +514,7 @@
     						</p>
     					</div>
     				</div>
-    			</div>
+    			</div> -->
     		</div>
     	</div>
     </section>
@@ -746,7 +874,10 @@
   <script src="js/scrollax.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBVWaKrjvy3MaE7SQ74_uJiULgl1JY0H2s&sensor=false"></script>
   <script src="js/google-map.js"></script>
-  <script src="js/main.js"></script>
+	<script src="js/main.js"></script>
+	<script>
+		
+	</script>
     
   </body>
 </html>
