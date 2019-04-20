@@ -406,7 +406,7 @@
     	<div class="container-fluid">
     		<div class="row">
 					<% for(var i=0;i<results.length;i++){ %>
-						<% if(req.user.username == undefined){ %>
+						<% if(req.user == undefined){ %>
     			<div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
     					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
@@ -429,7 +429,7 @@
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
-    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
     							<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
     						</p>
     					</div>
@@ -459,8 +459,7 @@
 												</div>
 												<hr>
 												<p class="bottom-area d-flex">
-													<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-													<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
+													<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
 												</p>
 											</div>
 										</div>

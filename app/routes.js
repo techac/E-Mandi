@@ -24,7 +24,7 @@ module.exports = function(app, passport, url, path){
 		else{
 			isLoggedIn = 0;
 		}
-		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result, fields){
+		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result){
 			var results={};
 			if(err) throw err;
 			results=result;
@@ -54,21 +54,45 @@ module.exports = function(app, passport, url, path){
 		
 	});
 
-	app.get("/makeTransaction/:title/:username/:role",isLoggedIn, function(req,res){
+	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
 		var role = req.params.role;
+		var price = req.params.price;
 		console.log(username);
 		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
 			if(err) throw err;
-			connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ result[0].id + "' and title='"+ title+ "'", function(err,result){
+			var id = result[0].id;
+			connection.query("SELECT * FROM Cart where title='"+ title + "' and sellerID='"+ result[0].id + "' and price='" + price + "' and id='"+ req.user.id + "'",function(err,result){
 				if(err) throw err;
-				connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
-					console.log(result);
-					res.redirect("/");
-				});
-				
-			})   
+				if(result.length>0){
+					connection.query("UPDATE Cart SET quantity=quantity+1 where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
+			 		function(err,result){
+					if(err) throw err;
+					connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+						if(err) throw err;
+						connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
+							console.log(result);
+							res.redirect("/");
+						});
+					});
+			}); 
+				}
+				else{
+					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, 1, id],
+					function(err,result){
+						if(err) throw err;
+						connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+							if(err) throw err;
+							connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
+								console.log(result);
+								res.redirect("/");
+							});
+						});
+					});
+				}
+			});
+			  
 		});
 		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
@@ -146,8 +170,13 @@ module.exports = function(app, passport, url, path){
 	});
 
   app.get('/cart.html',function(req,res){
-		console.log('Hello');
-		res.render('cart.ejs',{'title':'ejs'});
+		// console.log('Hello');
+		connection.query("SELECT * FROM Cart WHERE id='"+ req.user.id+"'",function(err, result){
+			if(err)throw err;
+			console.log(result);
+			res.render('cart.ejs',{req:req,results:result});
+		});
+		
 	});
 
 
