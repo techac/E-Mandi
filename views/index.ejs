@@ -49,7 +49,8 @@
 										<a class="dropdown-item" href="/login">Login</a>
 								<% } else {%>
 										<a class="dropdown-item" href="/logout">Signout</a>
-									  <a href="/wholeS<div class="rating">
+										<a href="/wholeSellerListing" class="dropdown-item">List Product</a>
+										<!-- <div class="rating">
 												<p class="text-right">
 													<span class="ion-ios-star-outline"></span>
 													<span class="ion-ios-star-outline"></span>
@@ -57,7 +58,7 @@
 													<span class="ion-ios-star-outline"></span>
 													<span class="ion-ios-star-outline"></span>
 												</p>
-											</div>ellerListing" class="dropdown-item">List Product</a></li>
+											</div> -->
 								<% } %>
               </div>
             </li>
@@ -113,32 +114,32 @@
     				<div class="product-slider owl-carousel ftco-animate">
     					<% for(var i=0;i<results.length;i++){ %>
 								<% if(req.user != undefined){ %>
-								<% if(results[i].username == req.user.username){ %>
-									<div class="item">
-											<div class="product">
-												<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template">
-													<span class="status">30%</span>
-												</a>
-												<div class="text pt-3 px-3">
-													<h3><a href="#"> <%= results[i].title %></a></h3>
-													<div class="d-flex">
-														<div class="pricing">
-															<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
+									<% if(results[i].username == req.user.username){ %>
+										<div class="item">
+												<div class="product">
+													<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template">
+														<!-- <span class="status">30%</span> -->
+													</a>
+													<div class="text pt-3 px-3">
+														<h3><a href="#"> <%= results[i].title %></a></h3>
+														<div class="d-flex">
+															<div class="pricing">
+																<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
+															</div>
+															<!-- <div class="rating">
+																<p class="text-right">
+																	<span class="ion-ios-star-outline"></span>
+																	<span class="ion-ios-star-outline"></span>
+																	<span class="ion-ios-star-outline"></span>
+																	<span class="ion-ios-star-outline"></span>
+																	<span class="ion-ios-star-outline"></span>
+																</p>
+															</div> -->
 														</div>
-														<!-- <div class="rating">
-															<p class="text-right">
-																<span class="ion-ios-star-outline"></span>
-																<span class="ion-ios-star-outline"></span>
-																<span class="ion-ios-star-outline"></span>
-																<span class="ion-ios-star-outline"></span>
-																<span class="ion-ios-star-outline"></span>
-															</p>
-														</div> -->
 													</div>
 												</div>
 											</div>
-										</div>
-										<% } %>
+											<% } %>
 									<% } %>
 							<% } %>
 	    				<!-- <div class="item">
@@ -171,7 +172,7 @@
 		    						<div class="d-flex">
 		    							<div class="pricing">
 				    						<p clas<div class="item">
-		    				<div class="product">
+		    				<div class="product">1
 		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
 		    					<div class="text pt-3 px-3">
 		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
@@ -208,7 +209,7 @@
 			    								<span class="ion-ios-star-outline"></span>
 			    								<span class="ion-ios-star-outline"></span>
 			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
+			    							</p>1
 			    						</div>
 			    					</div>
 		    					</div>
@@ -276,7 +277,7 @@
 			    								<span class="ion-ios-star-outline"></span>
 			    								<span class="ion-ios-star-outline"></span>
 			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
+			    							</p>1
 			    						</div>
 			    					</div>
 		    					</div>
@@ -295,7 +296,7 @@
 			    					</div>
 		    					</div>
 		    				</div>
-	    				</div>
+	    				</div>1
 	    				<div class="item">
 		    				<div class="product">
 		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
@@ -313,7 +314,7 @@
 			    								<span class="ion-ios-star-outline"></span>
 			    								<span class="ion-ios-star-outline"></span>
 			    							</p>
-			    						</div>
+			    						</div>1
 			    					</div>
 		    					</div>
 		    				</div>
@@ -347,7 +348,7 @@
 		    					<a href="#" class="img-prod"><img src="images/product-6.jpg" alt="Colorlib Template"></a>
 		    					<div class="text pt-3 px-3">
 		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
+		    						<div class="d-flex"1>
 		    							<div class="pricing">
 				    						<p class="price"><span>$120.00</span></p>
 				    					</div>
@@ -405,6 +406,7 @@
     	<div class="container-fluid">
     		<div class="row">
 					<% for(var i=0;i<results.length;i++){ %>
+						<% if(req.user.username == undefined){ %>
     			<div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
     					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
@@ -427,12 +429,44 @@
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
-    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
     							<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
     						</p>
     					</div>
     				</div>
 					</div>
+						<% } else {%>
+							<% if(req.user.username != results[i].username){ %>
+								<div class="col-sm col-md-6 col-lg ftco-animate">
+										<div class="product">
+											<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+											<div class="text py-3 px-3">
+												<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+												<div class="d-flex">
+													<div class="pricing">
+														<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+													</div>
+													<!-- <div class="rating">
+														<p class="text-right">
+															<span class="ion-ios-star-outline"></span>
+															<span class="ion-ios-star-outline"></span>
+															<span class="ion-ios-star-outline"></span>
+															<span class="ion-ios-star-outline"></span>
+															<span class="ion-ios-star-outline"></span>
+														</p>
+													</div> -->
+												</div>
+												<hr>
+												<p class="bottom-area d-flex">
+													<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>" class="add-to-cart" onclick=><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+													<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
+												</p>
+											</div>
+										</div>
+									</div>
+							<% } %>
+						<% } %>
 					<% } %>
     			<!-- <div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
@@ -455,7 +489,7 @@
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
-    							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+    							<a hreAngelBeatsf="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
     							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
     						</p>
     					</div>
@@ -473,12 +507,12 @@
 		    					<div class="rating">
 	    							<p class="text-right">
 	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
+	    								<sAngelBeatspan class="ion-ios-star-outline"></span>
 	    								<span class="ion-ios-star-outline"></span>
 	    								<span class="ion-ios-star-outline"></span>
 	    								<span class="ion-ios-star-outline"></span>
 	    							</p>
-	    						</div>
+	    						</div>AngelBeats
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
@@ -492,9 +526,9 @@
     				<div class="product">
     					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-4.jpg" alt="Colorlib Template"></a>
     					<div class="text py-3 px-3">
-    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-    						<div class="d-flex">
-    							<div class="pricing">
+    						<h3><a hAngelBeatsref="#">Young Woman Wearing Dress</a></h3>
+    						<div claAngelBeatsss="d-flex">
+    							<div cAngelBeatsAngelBeatslass="pricing">
 		    						<p class="price"><span>$120.00</span></p>
 		    					</div>
 		    					<div class="rating">
@@ -510,9 +544,9 @@
 	    					<hr>
     						<p class="bottom-area d-flex">
     							<a href="#" class="add-to-cart"><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
-    						</p>
-    					</div>
+    							<a hreAngelBeatsf="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a>
+    						</p>AngelBeats
+    					</div>AngeAngelBeatslBeats
     				</div>
     			</div> -->
     		</div>
@@ -531,7 +565,7 @@
 
     <section class="ftco-section testimony-section bg-light">
       <div class="container">
-				<div class="row justify-content-center mb-3 pb-3">
+				<div class="row AngelBeatsjustify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
           	<h1 class="big">Testimony</h1>
           </div>

@@ -44,6 +44,26 @@ module.exports = function(passport) {
         if(err) throw err;
         console.log("Wholeseller database created");
     });
+    connection.query("CREATE TABLE IF NOT EXISTS Retailer ( \
+        `id` INT UNSIGNED NOT NULL,\
+        `title` VARCHAR(255) NOT NULL,\
+        `price` INT,\
+        `stock` INT,\
+        FOREIGN KEY (id) REFERENCES users(id)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Retailer database created");
+    });
+    connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
+        `id` INT UNSIGNED NOT NULL,\
+        `title` VARCHAR(255) NOT NULL,\
+        `price` INT,\
+        `stock` INT,\
+        FOREIGN KEY (id) REFERENCES users(id)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Farmer database created");
+    });
     // `img` blob ,\
     // `file_name` varchar(45) collate latin1_general_ci ,\
     
