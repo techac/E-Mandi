@@ -17,23 +17,31 @@ module.exports = function(app, passport, url, path){
 	
 	app.get('/', function(req, res) {
 		var isLoggedIn;
-		var results=[];
+		// var results=[];
 		if(req.isAuthenticated()){
 			isLoggedIn = 1;
 		}
 		else{
 			isLoggedIn = 0;
 		}
-		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result, fields){
+		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result){
+			var results={};
 			if(err) throw err;
-			res.render('index.ejs',{authenticated:isLoggedIn,results: result,req:req }); // load the index.ejs file
+			results=result;
+			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
+				if(err) throw err;
+				results = results.concat(result);
+				console.log(results);
+				res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
+			});
+			
 			// setValue(result);
 			// setTimeout(function(){
 			// 	results =result;
 			// 	alert(results);
 			// }, Math.random()*2000);
 			// results = result;
-			console.log(result);
+			// console.log(result);
 		});
 		
 		// console.log(results);
@@ -46,20 +54,45 @@ module.exports = function(app, passport, url, path){
 		
 	});
 
-	app.get("/makeTransaction/:title/:username",function(req,res){
+	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
+		var role = req.params.role;
+		var price = req.params.price;
 		console.log(username);
 		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
 			if(err) throw err;
-			connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE id='"+ result[0].id + "' and title='"+ title+ "'", function(err,result){
+			var id = result[0].id;
+			connection.query("SELECT * FROM Cart where title='"+ title + "' and sellerID='"+ result[0].id + "' and price='" + price + "' and id='"+ req.user.id + "'",function(err,result){
 				if(err) throw err;
-				connection.query("DELETE FROM Wholeseller where stock<=0",function(err,result){
-					console.log(result);
-					res.redirect("/");
-				});
-				
-			})   
+				if(result.length>0){
+					connection.query("UPDATE Cart SET quantity=quantity+1 where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
+			 		function(err,result){
+					if(err) throw err;
+					connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+						if(err) throw err;
+						connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
+							console.log(result);
+							res.redirect("/");
+						});
+					});
+			}); 
+				}
+				else{
+					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, 1, id],
+					function(err,result){
+						if(err) throw err;
+						connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+							if(err) throw err;
+							connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
+								console.log(result);
+								res.redirect("/");
+							});
+						});
+					});
+				}
+			});
+			  
 		});
 		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
@@ -137,8 +170,13 @@ module.exports = function(app, passport, url, path){
 	});
 
   app.get('/cart.html',function(req,res){
-		console.log('Hello');
-		res.render('cart.ejs',{'title':'ejs'});
+		// console.log('Hello');
+		connection.query("SELECT * FROM Cart WHERE id='"+ req.user.id+"'",function(err, result){
+			if(err)throw err;
+			console.log(result);
+			res.render('cart.ejs',{req:req,results:result});
+		});
+		
 	});
 
 
@@ -176,7 +214,7 @@ module.exports = function(app, passport, url, path){
 	app.post('/wholeSellerListing', isLoggedIn, function(req,res){
 		// console.log(req.body.img);
 		// var img = fs.readFileSync(req.body.img);
-		connection.query("INSERT INTO Wholeseller (id , title, price, stock ) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
+		connection.query("INSERT INTO "+ req.user.role+ " (id , title, price, stock ) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
 			if(err) throw err;
 			console.log("Entry Successsfully created");
 		});
