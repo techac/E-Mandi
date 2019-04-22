@@ -20,6 +20,20 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
+    connection.query("CREATE TABLE IF NOT EXISTS Cart ( \
+        `id` INT UNSIGNED NOT NULL, \
+        `title` VARCHAR(255) NOT NULL, \
+        `price` INT NOT NULL, \
+        `quantity` INT NOT NULL, \
+        `sellerID` INT UNSIGNED NOT NULL, \
+        FOREIGN KEY (id) REFERENCES users(id), \
+        FOREIGN KEY (sellerID) REFERENCES users(id)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Cart database created");
+    });
+
+
     connection.query('\
     CREATE TABLE IF NOT EXISTS`' + dbconfig.database + '`.`' + dbconfig.users_table + '` ( \
         `id` INT UNSIGNED NOT NULL AUTO_INCREMENT, \
@@ -44,9 +58,23 @@ module.exports = function(passport) {
         if(err) throw err;
         console.log("Wholeseller database created");
     });
+<<<<<<< HEAD
     
     // Farmer Object
     connection.query("CREATE TABLE IF NOT EXISTS Farmer ( \
+=======
+    connection.query("CREATE TABLE IF NOT EXISTS Retailer ( \
+        `id` INT UNSIGNED NOT NULL,\
+        `title` VARCHAR(255) NOT NULL,\
+        `price` INT,\
+        `stock` INT,\
+        FOREIGN KEY (id) REFERENCES users(id)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Retailer database created");
+    });
+    connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
+>>>>>>> 640d78330f9f5dfe33c40b4c5b2f000b28b9a3db
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
         `price` INT,\
