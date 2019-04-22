@@ -58,11 +58,6 @@ module.exports = function(passport) {
         if(err) throw err;
         console.log("Wholeseller database created");
     });
-<<<<<<< HEAD
-    
-    // Farmer Object
-    connection.query("CREATE TABLE IF NOT EXISTS Farmer ( \
-=======
     connection.query("CREATE TABLE IF NOT EXISTS Retailer ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
@@ -74,7 +69,7 @@ module.exports = function(passport) {
         console.log("Retailer database created");
     });
     connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
->>>>>>> 640d78330f9f5dfe33c40b4c5b2f000b28b9a3db
+
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
         `price` INT,\
