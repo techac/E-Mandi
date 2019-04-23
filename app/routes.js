@@ -54,6 +54,38 @@ module.exports = function(app, passport, url, path){
 		
 	});
 
+	app.get("/deleteItemCart/:id/:sellerID/:title/:quantity/:price",function(req,res){
+		id = req.params.id;
+		sellerID = req.params.sellerID;
+		title = req.params.title;
+		quantity = req.params.quantity;
+		price = req.params.price;
+		connection.query("DELETE FROM Cart WHERE id='" + id +"' and sellerID='"+ sellerID +"' and title='"+ title +"'",function(err,result){
+			if(err) throw err;
+			connection.query("SELECT * from users WHERE id='"+ sellerID +"'",function(err,result){
+				if(err) throw err;
+				var role = result[0].role;
+				connection.query("SELECT * FROM "+ result[0].role+ " WHERE id='" + sellerID + "' and title='"+ title +"'",function(err,result){
+					if(err) throw err;
+					if(result.length>0){
+						connection.query("UPDATE "+ role + " SET stock=stock+" + quantity +" WHERE title='"+ title+"' and id='"+ sellerID+"'",function(err,result){
+							if(err) throw err;
+							res.redirect('/cart.html');
+						});
+					}	
+					else{
+						connection.query("INSERT INTO "+role+ " VALUES (?,?,?,?)",[sellerID, title,price,quantity ],function(err,result){
+							if(err) throw err;
+							res.redirect("/cart.html");
+						});
+					}
+				});
+			});
+		});
+	});
+
+
+
 	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
