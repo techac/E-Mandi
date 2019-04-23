@@ -69,7 +69,6 @@ module.exports = function(passport) {
         console.log("Retailer database created");
     });
     connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
-
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
         `price` INT,\
