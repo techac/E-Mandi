@@ -213,7 +213,34 @@ module.exports = function(app, passport, url, path){
 
 
 	app.get('/wholeSellerListing',function(req,res){
-		res.render('addListing.ejs',{'req':req});
+        connection.query("SELECT name from Items where category='Fruit'", function(err,result,fields){
+			if(err) throw err;
+            var fruits = [];
+            Object.keys(result).forEach(function(key) {
+                var row = result[key];
+                //console.log(row.name);
+                fruits.push(row.name);
+            });
+            connection.query("SELECT name from Items where category='Vegetable'", function(err,result,fields){
+                if(err) throw err;
+                var vegetables = [];
+                Object.keys(result).forEach(function(key) {
+                    var row = result[key];
+                    //console.log(row.name);
+                    vegetables.push(row.name);
+                });
+                connection.query("SELECT name from Items where category='Spice'", function(err,result,fields){
+                    if(err) throw err;
+                    var spices = [];
+                    Object.keys(result).forEach(function(key) {
+                        var row = result[key];
+                        //console.log(row.name);
+                        spices.push(row.name);
+                    });
+                    res.render('addListing.ejs',{'req':req , fruit: fruits , vegetable: vegetables, spice: spices});
+                });
+            });
+        });
 	});
 
 	app.post('/wholeSellerListing', isLoggedIn, function(req,res){

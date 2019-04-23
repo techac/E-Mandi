@@ -4,8 +4,85 @@
     </head>
     <body>
         <form action='/wholeSellerListing' method="post">
-            <label>Name</label>
-            <input type="text" name='title'>
+            <label>Category</label>
+            <select name="meal" id="meal" onchange="changeCat(this);">
+                <option value="">Select</option>
+                <option value="fruits">fruits</option>
+                <option value="vegetables">vegetables</option>
+                <option value="spices">spices</option>
+            </select>
+            <label>Names</label>
+            <select name="category" id="category" >
+                <% if(1){ %>
+                    <% for(var i=0;i<fruit.length;i++){ %>
+                        <option value="">Select</option>
+                        <option value=""><%= fruit[i] %></option>
+                    <% } %>
+                <% } else if(2){ %>
+                    <% for(var i=0;i<vegetable.length;i++){ %>
+                        <option value="">Select</option>
+                        <option value=""><%= vegetable[i] %></option>
+                    <% } %>
+                <% } else if(3){ %>
+                    <% for(var i=0;i<spice.length;i++){ %>
+                        <option value="">Select</option>
+                        <option value=""><%= spice[i] %></option>
+                    <% } %>
+                <% } %>
+            </select>
+            
+// Code for js implementation
+// to execute include in script tag
+<!--
+            <select name="meal" id="meal" onchange="changeCat(this);">
+                <option value="">Select</option>
+                <option value="fruits">fruits</option>
+                <option value="vegetables">vegetables</option>
+                <option value="spices">spices</option>
+            </select>
+
+            <select name="category" id="category" size="5">
+                <option value="">Select</option>
+            </select>
+-->
+//                var fruit = ["ejbdl" , "djksf" , "dbdj"];
+//                var vegetable = ["bdkj" , "sdbkj" , "hsb" , "sk"];
+//                var spice = ["bckdb"]; 
+//                var changeCat = function changeCat(firstList) {
+//                    var newSel = document.getElementById("category");
+//                    //if you want to remove this default option use newSel.innerHTML=""
+//                    newSel.innerHTML="<option value=\"\">Select</option>"; // to reset the second list everytime
+//                    var opt;
+//
+//                    //test according to the selected value
+//                    switch (firstList.options[firstList.selectedIndex].value) {
+//                        case "fruits":
+//                            for (var i=0; len=fruit.length, i<len; i++) {
+//                                opt = document.createElement("option");
+//                                opt.value = fruit[i];
+//                                opt.text = fruit[i];
+//                                newSel.appendChild(opt);
+//                            }
+//                            break;
+//                        case "vegetables":
+//                            for (var i=0; len=vegetable.length, i<len; i++) {
+//                                opt = document.createElement("option");
+//                                opt.value = vegetable[i];
+//                                opt.text = vegetable[i];
+//                                newSel.appendChild(opt);
+//                            }
+//                        break;
+//                        case "spices":
+//                            for (var i=0; len=spice.length, i<len; i++) {
+//                                opt = document.createElement("option");
+//                                opt.value = spice[i];
+//                                opt.text = spice[i];
+//                                newSel.appendChild(opt);
+//                        }
+//                        break;
+//                    }
+//                }
+
             <label>Price</label>
             <input type='text' name='price'>
             <label>Quantity</label>
