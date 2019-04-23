@@ -69,6 +69,7 @@ module.exports = function(passport) {
         console.log("Retailer database created");
     });
     connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
+
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
         `price` INT,\
@@ -82,6 +83,86 @@ module.exports = function(passport) {
     // `file_name` varchar(45) collate latin1_general_ci ,\
     
 
+    // Items Table
+    connection.query("CREATE TABLE IF NOT EXISTS Items ( \
+        `id` INT UNSIGNED NOT NULL,\
+        `name` VARCHAR(255) NOT NULL,\
+        `category` VARCHAR(255) NOT NULL, \
+        UNIQUE INDEX `id_UNIQUE` (`id` ASC)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Items database created");
+    });
+    
+    // Inserting values in table
+    var sql = "INSERT INTO Items (id,name,category) VALUES ?";
+    var items = [
+        [1,'Apple','Fruit'] , 
+        [2,'Apricots','Fruit'] ,
+        [3,'Avocado','Fruit'] ,
+        [4,'Banana','Fruit'] ,
+        [5,'Blackberries','Fruit'] ,
+        [6,'Blackcurrant','Fruit'] ,
+        [7,'Blueberries','Fruit'] ,
+        [8,'Cherries','Fruit'] ,
+        [9,'Clementine','Fruit'] ,
+        [10,'Coconut','Fruit'] ,
+        [11,'Cranberries','Fruit'] ,
+        [12,'Grapefruit','Fruit'] ,
+        [13,'Grapes','Fruit'] ,
+        [14,'Guava','Fruit'] ,
+        [15,'Jackfruit','Fruit'] ,
+        [16,'Kiwifruit','Fruit'] ,
+        [17,'Kumquat','Fruit'] ,
+        [18,'Lemon','Fruit'] ,
+        [19,'Lychee','Fruit'],
+        [20,'Mango','Fruit'] ,
+        [21,'Mulberries','Fruit'] ,
+        [22,'Olives','Fruit'] ,
+        [23,'Papaya','Fruit'] ,
+        [24,'Pear','Fruit'] ,
+        [25,'Pineapple','Fruit'] ,
+        [26,'Plums','Fruit'] ,
+        [27,'Pomegranate','Fruit'] ,
+        [28,'Prunes','Fruit'] ,
+        [29,'Raspberries','Fruit'] ,
+        [30,'Strawberries','Fruit'] ,
+        [31,'Tamarind','Fruit'] ,
+        [32,'Beetroot','Vegetable'] ,
+        [33,'Bitter Gourd','Vegetable'] ,
+        [34,'Black Pepper','Vegetable'] ,
+        [35,'Bottle Gourd','Vegetable'] ,
+        [36,'Cabbage','Vegetable'] ,
+        [37,'Capsicum','Vegetable'] ,
+        [38,'Carrot','Vegetable'] ,
+        [39,'Cauliflower','Vegetable'] ,
+        [40,'Corn','Vegetable'] ,
+        [41,'Chilli','Vegetable'] ,
+        [42,'Cucumber','Vegetable'] ,
+        [43,'Curry Leaf','Vegetable'] ,
+        [44,'Garlic','Vegetable'] ,
+        [45,'Ginger','Vegetable'] ,
+        [46,'Green Beans','Vegetable'] ,
+        [47,'Jackfruit','Vegetable'] ,
+        [48,'Lady Finger','Vegetable'] ,
+        [49,'Mushroom','Vegetable'] ,
+        [50,'Onion','Vegetable'] ,
+        [51,'Peas','Vegetable'] ,
+        [52,'Potato','Vegetable'] ,
+        [53,'Radish','Vegetable'] ,
+        [54,'Spinach','Vegetable'] ,
+        [55,'Spring Onion','Vegetable'] ,
+        [56,'Sweet Potato','Vegetable'] ,
+        [57,'Tomato','Vegetable'] ,
+        [58,'Turmeric','Vegetable'] ,
+        [59,'Turnip','Vegetable']
+    ]; 
+    			    
+  connection.query(sql,[items], function (err, result) {
+    if (err) throw err;
+    console.log(result.affectedRows + "records inserted");
+  });
+    
     passport.serializeUser(function(user, done) {
         done(null, user.id);
     });
