@@ -20,18 +20,7 @@ module.exports = function(passport) {
     // passport needs ability to serialize and unserialize users out of session
 
     // used to serialize the user for the session
-    connection.query("CREATE TABLE IF NOT EXISTS Cart ( \
-        `id` INT UNSIGNED NOT NULL, \
-        `title` VARCHAR(255) NOT NULL, \
-        `price` INT NOT NULL, \
-        `quantity` INT NOT NULL, \
-        `sellerID` INT UNSIGNED NOT NULL, \
-        FOREIGN KEY (id) REFERENCES users(id), \
-        FOREIGN KEY (sellerID) REFERENCES users(id)\
-    ) ", function(err,result){
-        if(err) throw err;
-        console.log("Cart database created");
-    });
+    
 
 
     connection.query('\
@@ -48,6 +37,21 @@ module.exports = function(passport) {
         if(err) throw err;
         console.log("Users Table created Succesfully");
     });
+
+    connection.query("CREATE TABLE IF NOT EXISTS Cart ( \
+        `id` INT UNSIGNED NOT NULL, \
+        `title` VARCHAR(255) NOT NULL, \
+        `price` INT NOT NULL, \
+        `quantity` INT NOT NULL, \
+        `sellerID` INT UNSIGNED NOT NULL, \
+        FOREIGN KEY (id) REFERENCES users(id), \
+        FOREIGN KEY (sellerID) REFERENCES users(id)\
+    ) ", function(err,result){
+        if(err) throw err;
+        console.log("Cart database created");
+    });
+
+    
     connection.query("CREATE TABLE IF NOT EXISTS Wholeseller ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\

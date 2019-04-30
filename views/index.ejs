@@ -130,7 +130,7 @@
 									<% if(results[i].username == req.user.username){ %>
 										<div class="item">
 												<div class="product">
-													<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template">
+													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template">
 														<!-- <span class="status">30%</span> -->
 													</a>
 													<div class="text pt-3 px-3">
@@ -204,7 +204,7 @@
 							<%} else { %>
 								<a href="viewProducts" style="margin-right: 0"> View All</a> 
 								<% } %>
-						<% }%>
+						<% } %>
           </div>
 				</div>   		
     	</div>
@@ -232,8 +232,8 @@
     				</div>
 					</div>
 						<% } else if(req.user.role == "Farmer"){%>
-							<% } else { %>
-							<% if(req.user.username != results[i].username){ %>
+							<% } else if(req.user.role == "Wholeseller") { %>
+							<% if(req.user.username != results[i].username && results[i].role=="Farmer"){ %>
 								<div class="col-sm col-md-6 col-lg ftco-animate">
 										<div class="product">
 											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
@@ -253,7 +253,53 @@
 										</div>
 									</div>
 								<% } %>
-							<% } %>
+							
+
+
+							<% } else if(req.user.role == "Retailer") { %>
+								<% if(req.user.username != results[i].username && results[i].role=="Wholeseller"){ %>
+									<div class="col-sm col-md-6 col-lg ftco-animate">
+											<div class="product">
+												<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+												<div class="text py-3 px-3">
+													<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+													<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+													<div class="d-flex">
+														<div class="pricing">
+															<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+														</div>
+													</div>
+													<hr>
+													<p class="bottom-area d-flex">
+														<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+													</p>
+												</div>
+											</div>
+										</div>
+									<% } %>
+
+								<% } else if(req.user.role == "Civilian") { %>
+									<% if(req.user.username != results[i].username && (results[i].role=="Wholeseller" || results[i].role=="Retailer")){ %>
+										<div class="col-sm col-md-6 col-lg ftco-animate">
+												<div class="product">
+													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+													<div class="text py-3 px-3">
+														<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+														<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+														<div class="d-flex">
+															<div class="pricing">
+																<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+															</div>
+														</div>
+														<hr>
+														<p class="bottom-area d-flex">
+															<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+														</p>
+													</div>
+												</div>
+											</div>
+										<% } %>
+									<% } %>
 						<% } %>
 					
     			<!-- <div class="col-sm col-md-6 col-lg ftco-animate">
