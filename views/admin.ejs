@@ -14,6 +14,7 @@
     </head>
     <body>
 
+        <a class="signout" href="/logout">Signout</a>
         <h1>users</h1>
        
         <% if((users_data.length>0)) { %>
@@ -132,32 +133,85 @@
                         <p>There are no farmers.</p>
                        <% } %> 
 
-                    <form class="updated_form" method="post" action="/updateDatabase">
-                        <div class="form-group">
-                            <label for="table_name">Table name</label>
-                            <input type="text" class="form-control" id="table_name"  name="table_name" placeholder="Enter table name">
-                        </div>
-                        <div class="form-group">
-                            <label for="column_name">Column name</label>
-                            <input type="text" class="form-control" id="column_name" name="column_name" placeholder="Enter column name">
-                        </div>
-                        <div class="form-group">
-                                <label for="title_name">Title name</label>
-                                <input type="text" class="form-control" id="title_name" name="title_name" placeholder="Enter title">
-                             </div>
-                        <div class="form-group">
-                            <label for="id_num">ID</label>
-                            <input type="text" class="form-control" id="id_num" name="id" placeholder="Enter ID No.">
-                         </div>
-                         
-                        <div class="form-group">
-                            <label for="updated_value">Updated Value</label>
-                            <input type="text" class="form-control" id="updated_value" name="updated_value" placeholder="Enter new value">
-                         </div>
+                       <hr>
+
+                       <div class="query_forms">
+                        <form class="insert_form" method="post" action="/insertDatabase">
+                              <div class="form-group">
+                                  <label for="table_name">Table name</label>
+                                  <input type="text" class="form-control" id="table_name"  name="table_name" placeholder="Enter table name">
+                              </div>
+                              <div class="form-group">
+                                <label for="id_num">ID</label>
+                                <input type="text" class="form-control" id="id_num" name="id" placeholder="Enter ID No.">
+                            </div>
+                              
+                              <div class="form-group">
+                                      <label for="title_name">Title name</label>
+                                      <input type="text" class="form-control" id="title_name" name="title_name" placeholder="Enter item title">
+                                  </div>
+                             
+                              <div class="form-group">
+                                <label for="stock">Stock</label>
+                                <input type="text" class="form-control" id="stock" name="stock" placeholder="Enter stock">
+                            </div>
+                              <div class="form-group">
+                                  <label for="price">Price</label>
+                                  <input type="text" class="form-control" id="price" name="price" placeholder="Enter price">
+                              </div>
+                                  
+                              
+                              <button type="submit" class="btn btn-primary text-center">Insert</button>
+                       </form>
+                       
+                       <form class="update_form" method="post" action="/updateDatabase">
+                            <div class="form-group">
+                                <label for="table_name">Table name</label>
+                                <input type="text" class="form-control" id="table_name"  name="table_name" placeholder="Enter table name">
+                            </div>
+                            <div class="form-group">
+                                <label for="column_name">Column name</label>
+                                <input type="text" class="form-control" id="column_name" name="column_name" placeholder="Enter column name">
+                            </div>
+                            <div class="form-group">
+                                    <label for="title_name">Title name</label>
+                                    <input type="text" class="form-control" id="title_name" name="title_name" placeholder="Enter title">
+                                  </div>
+                            <div class="form-group">
+                                <label for="id_num">ID</label>
+                                <input type="text" class="form-control" id="id_num" name="id" placeholder="Enter ID No.">
+                              </div>
+                              
+                            <div class="form-group">
+                                <label for="updated_value">Updated Value</label>
+                                <input type="text" class="form-control" id="updated_value" name="updated_value" placeholder="Enter new value">
+                              </div>
+                                
                             
-                        
-                        <button type="submit" class="btn btn-primary text-center">Submit</button>
+                            <button type="submit" class="btn btn-primary text-center">Update</button>
+                       </form>
+                       
+                       <form class="delete_form" method="post" action="/deleteDatabase">
+                            <div class="form-group">
+                                <label for="table_name">Table name</label>
+                                <input type="text" class="form-control" id="table_name"  name="table_name" placeholder="Enter table name">
+                            </div>
+
+                            <div class="form-group">
+                              <label for="id_num">ID</label>
+                              <input type="text" class="form-control" id="id_num" name="id" placeholder="Enter ID No.">
+                            </div>
+    
+                            <div class="form-group">
+                                    <label for="title_name">Title name</label>
+                                    <input type="text" class="form-control" id="title_name" name="title_name" placeholder="Enter title">
+                                </div>
+                            
+                            <button type="submit" class="btn btn-primary text-center">Delete</button>
                      </form>       
+                       </div>
+
+                    
           
         
         <script src="js/jquery.min.js"></script>
