@@ -3,7 +3,7 @@
         <title>List Your Product</title>
     </head>
     <body>
-        <form action='/wholeSellerListing' method="post">
+        <form action='/wholeSellerListing' method="post" enctype="multipart/form-data">
             <label>Category</label>
             <select name="meal" id="meal" onchange="changeCat(this);">
                 <option value="">Select</option>
@@ -31,25 +31,13 @@
                 <% } %>
             </select>
             
-<!--
-            <select name="meal" id="meal" onchange="changeCat(this);">
-                <option value="">Select</option>
-                <option value="fruits">fruits</option>
-                <option value="vegetables">vegetables</option>
-                <option value="spices">spices</option>
-            </select>
-
-            <select name="category" id="category" size="5">
-                <option value="">Select</option>
-            </select>
--->
-
+            
             <label>Price</label>
-            <input type='text' name='price'>
+            <input type='text' name='price' required>
             <label>Quantity</label>
-            <input type="number" min="1" name="stock">
-            <input type="file"  id="file" name="img"/> 
-            <input type="submit" value="Submit">
+            <input type="number" min="1" name="stock" required>
+            <input type="file"  id="file" name="img" accept=""/ required> 
+            <input type="submit" value="Submit" >
         </form>
         <script>
             var x = "<%= fruit %>";
