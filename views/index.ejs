@@ -30,7 +30,7 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="#">Kissan Mandi</a>
+	      <!-- <a class="navbar-brand" href="#">Kissan Mandi</a> -->
 	      <a class="navbar-brand" href="index.html">
 					<% if(req.user == undefined){ %>
 						Kissan Mandi
@@ -138,7 +138,11 @@
 														<div class="d-flex">
 															<div class="pricing">
 																<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
+																<p class="price"><span class="price-sale">Qty: <%= results[i].stock %></span></p>
+
 															</div>
+															<a href="/updateListing/<%= results[i].title %>/<%= results[i].price %>/<%= results[i].stock %>"><button>Update</button></a>
+															<a href="/deleteListing/<%= results[i].title %>/<%= results[i].price %>/<%= results[i].stock %>"><button>Delete</button></a>
 															<!-- <div class="rating">
 																<p class="text-right">
 																	<span class="ion-ios-star-outline"></span>

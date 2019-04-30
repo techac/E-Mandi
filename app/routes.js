@@ -47,6 +47,38 @@ module.exports = function(app, passport, url, path){
 		// console.log(isLoggedIn);
 		
 	});
+	
+	app.get('/updateListing/:title/:price/:stock',function(req,res){
+		var title = req.params.title;
+		var price = req.params.price;
+		var stock = req.params.stock;
+		res.render('updateListing.ejs',{title:title, price:price, stock:stock});
+
+	});
+
+	app.get('/deleteListing/:title/:price/:stock', function(req,res){
+		var title = req.params.title;
+		var price = req.params.price;
+		var stock = req.params.stock;
+		connection.query("DELETE FROM "+ req.user.role + " WHERE id='" + req.user.id + "' and title='"+ title+"' and price='"+ price + "' and stock='" + stock +"'",function(err,result){
+			if(err)throw err;
+			res.redirect("/");
+		});
+	});
+
+	app.post('/updateListing',function(req,res){
+		var title = req.body.title;
+		var price = req.body.price;
+		var stock = req.body.stock;
+		console.log(price);
+		var query = "UPDATE "+ req.user.role + " set stock='" + stock +"' , price='" + price + "' where id='" + req.user.id +"' and title='" + title + "'";
+		console.log(query);
+		connection.query(query,function(err,result){
+			if(err) throw err;
+			console.log(result.length);
+			res.redirect("/");
+		});
+	});
 
 	app.get("/deleteItemCart/:id/:sellerID/:title/:quantity/:price",function(req,res){
 		id = req.params.id;
