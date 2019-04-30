@@ -16,8 +16,8 @@ module.exports = function(app, passport, url, path){
 	
 	
 	app.get('/', function(req, res) {
+		console.log(__dirname);
 		var isLoggedIn;
-		// var results=[];
 		if(req.isAuthenticated()){
 			isLoggedIn = 1;
 		}
@@ -31,17 +31,9 @@ module.exports = function(app, passport, url, path){
 			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
 				if(err) throw err;
 				results = results.concat(result);
-				console.log(results);
+				console.log(req.user);
 				res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
 			});
-			
-			// setValue(result);
-			// setTimeout(function(){
-			// 	results =result;
-			// 	alert(results);
-			// }, Math.random()*2000);
-			// results = result;
-			// console.log(result);
 		});
 		
 		// console.log(results);
@@ -53,6 +45,125 @@ module.exports = function(app, passport, url, path){
 		// console.log(isLoggedIn);
 		
 	});
+	
+	app.get('/updateListing/:title/:price/:stock',function(req,res){
+		var title = req.params.title;
+		var price = req.params.price;
+		var stock = req.params.stock;
+		res.render('updateListing.ejs',{title:title, price:price, stock:stock});
+
+	});
+
+	app.get('/deleteListing/:title/:price/:stock', function(req,res){
+		var title = req.params.title;
+		var price = req.params.price;
+		var stock = req.params.stock;
+		connection.query("DELETE FROM "+ req.user.role + " WHERE id='" + req.user.id + "' and title='"+ title+"' and price='"+ price + "' and stock='" + stock +"'",function(err,result){
+			if(err)throw err;
+			res.redirect("/");
+		});
+	});
+
+	app.post('/updateListing',function(req,res){
+		var title = req.body.title;
+		var price = req.body.price;
+		var stock = req.body.stock;
+		console.log(price);
+		var query = "UPDATE "+ req.user.role + " set stock='" + stock +"' , price='" + price + "' where id='" + req.user.id +"' and title='" + title + "'";
+		console.log(query);
+		connection.query(query,function(err,result){
+			if(err) throw err;
+			console.log(result.length);
+			res.redirect("/");
+		});
+	});
+
+	app.get("/deleteItemCart/:id/:sellerID/:title/:quantity/:price",function(req,res){
+		id = req.params.id;
+		sellerID = req.params.sellerID;
+		title = req.params.title;
+		quantity = req.params.quantity;
+		price = req.params.price;
+		connection.query("DELETE FROM Cart WHERE id='" + id +"' and sellerID='"+ sellerID +"' and title='"+ title +"'",function(err,result){
+			if(err) throw err;
+			connection.query("SELECT * from users WHERE id='"+ sellerID +"'",function(err,result){
+				if(err) throw err;
+				var role = result[0].role;
+				connection.query("SELECT * FROM "+ result[0].role+ " WHERE id='" + sellerID + "' and title='"+ title +"'",function(err,result){
+					if(err) throw err;
+					if(result.length>0){
+						connection.query("UPDATE "+ role + " SET stock=stock+" + quantity +" WHERE title='"+ title+"' and id='"+ sellerID+"'",function(err,result){
+							if(err) throw err;
+							res.redirect('/cart.html');
+						});
+					}	
+					else{
+						connection.query("INSERT INTO "+role+ " VALUES (?,?,?,?)",[sellerID, title,price,quantity ],function(err,result){
+							if(err) throw err;
+							res.redirect("/cart.html");
+						});
+					}
+				});
+			});
+		});
+	});
+
+	app.get('/viewProducts', function(req,res){
+		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id ",function(err, result){
+			var results={};
+			if(err) throw err;
+			results=result;
+			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
+				if(err) throw err;
+				results = results.concat(result);
+				console.log(results);
+				
+				// console.log(objs);
+				res.render('viewAll.ejs',{results: results,req:req});
+			});
+			
+			// setValue(result);
+			// setTimeout(function(){
+			// 	results =result;
+			// 	alert(results);
+			// }, Math.random()*2000);
+			// results = result;
+			// console.log(result);
+		});
+		
+	});
+
+	app.get('/viewProducts/:state', function(req,res){
+		var state = req.params.state;
+		if(state == 'All'){
+			res.redirect('/viewProducts');
+		}
+		console.log(state);
+		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id where state='"+ state+"'",function(err, result){
+			var results={};
+			if(err) throw err;
+			results=result;
+			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id where state='"+ state+"'",function(err,result){
+				if(err) throw err;
+				results = results.concat(result);
+				console.log(results);
+				
+				// console.log(objs);
+				res.render('viewAll.ejs',{results: results,req:req});
+			});
+			
+			// setValue(result);
+			// setTimeout(function(){
+			// 	results =result;
+			// 	alert(results);
+			// }, Math.random()*2000);
+			// results = result;
+			// console.log(result);
+		});
+
+	})
+
+
 
 	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
@@ -197,9 +308,7 @@ module.exports = function(app, passport, url, path){
 	// we will want this protected so you have to be logged in to visit
 	// we will use route middleware to verify this (the isLoggedIn function)
 	app.get('/profile', isLoggedIn, function(req, res) {
-		res.render('profile.ejs', {
-			user : req.user // get the user out of session and pass to template
-		});
+		res.redirect("/");
 	});
 
 	// =====================================
@@ -214,13 +323,22 @@ module.exports = function(app, passport, url, path){
 
 	//my routes
 
-
-	app.get('/index.html',function(req,res){
-		// console.log(isLoggedIn);
-		res.render('index.ejs',{'req':req});
+	app.get('/about.html', function(req,res){
+		res.render('about.ejs');
+	});
+	app.get('/checkout.html', function(req,res){
+		res.render('checkout.ejs');
 	});
 
-  app.get('/cart.html',function(req,res){
+	app.get('/product-single.html', function(req,res){
+		res.render('product-single.ejs');
+	});
+
+	app.get('/index.html',function(req,res){
+		res.redirect('/');
+	});
+
+  app.get('/cart.html',isLoggedIn, function(req,res){
 		// console.log('Hello');
 		connection.query("SELECT * FROM Cart WHERE id='"+ req.user.id+"'",function(err, result){
 			if(err)throw err;
@@ -232,18 +350,69 @@ module.exports = function(app, passport, url, path){
 
 
 	app.get('/wholeSellerListing',function(req,res){
-		res.render('addListing.ejs',{'req':req});
+        connection.query("SELECT name from Items where category='Fruit'", function(err,result,fields){
+			if(err) throw err;
+            var fruits = [];
+            Object.keys(result).forEach(function(key) {
+                var row = result[key];
+                //console.log(row.name);
+                fruits.push(row.name);
+            });
+            connection.query("SELECT name from Items where category='Vegetable'", function(err,result,fields){
+                if(err) throw err;
+                var vegetables = [];
+                Object.keys(result).forEach(function(key) {
+                    var row = result[key];
+                    //console.log(row.name);
+                    vegetables.push(row.name);
+                });
+                connection.query("SELECT name from Items where category='Spice'", function(err,result,fields){
+                    if(err) throw err;
+                    var spices = [];
+                    Object.keys(result).forEach(function(key) {
+                        var row = result[key];
+                        //console.log(row.name);
+                        spices.push(row.name);
+                    });
+                    res.render('addListing.ejs',{'req':req , fruit: fruits , vegetable: vegetables, spice: spices});
+                });
+            });
+        });
 	});
 
 	app.post('/wholeSellerListing', isLoggedIn, function(req,res){
+		console.log(req.files);
 		// console.log(req.body.img);
 		// var img = fs.readFileSync(req.body.img);
-		connection.query("INSERT INTO "+ req.user.role+ " (id , title, price, stock ) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
-			if(err) throw err;
-			console.log("Entry Successsfully created");
-		});
-		res.send("Entry Successful");
-		// res.redirect('/');
+		// connection.query("INSERT INTO "+ req.user.role+ " (id , title, price, stock ) VALUES (?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock],function(err, result){
+		// 	if(err) throw err;
+		// 	console.log("Entry Successsfully created");
+		// });
+		// res.send("Entry Successful");
+		// // res.redirect('/');
+		if (!req.files)
+		  return res.status(400).send('No files were uploaded.');
+ 
+		  var file = req.files.img;
+		  var img_name=file.name;
+ 
+	  	if(file.mimetype == "image/jpeg" ||file.mimetype == "image/png"||file.mimetype == "image/gif" ){
+                                 
+              file.mv('views/public/images/upload_images/'+file.name, function(err) {
+                             
+	              if (err)
+ 
+	                return res.status(500).send(err);
+                  connection.query("INSERT INTO "+ req.user.role+ " (id , title, price, stock, image) VALUES (?,?,?,?,?) ", [req.user.id, req.body.title, req.body.price, req.body.stock,img_name],function(err, result){
+			             if(err) throw err;
+                        res.redirect('/');
+                      console.log("Entry Successsfully created");
+		          });
+	           });
+          } else {
+            message = "This format is not allowed , please upload file with '.png','.gif','.jpg'";
+            res.render('index.ejs',{message: message});
+          }	
 		
 
 	});

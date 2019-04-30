@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Modist - Free Bootstrap 4 Template by Colorlib</title>
+    <title>E-Mandi </title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     
@@ -30,14 +30,22 @@
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark ftco_navbar bg-dark ftco-navbar-light" id="ftco-navbar">
 	    <div class="container">
-	      <a class="navbar-brand" href="index.html">Modist</a>
+	      <!-- <a class="navbar-brand" href="#">Kissan Mandi</a> -->
+	      <a class="navbar-brand" href="index.html">
+					<% if(req.user == undefined){ %>
+						Kissan Mandi
+						<% } else{%>
+								<%= req.user.username %>
+							<% } %>
+
+				</a>
 	      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#ftco-nav" aria-controls="ftco-nav" aria-expanded="false" aria-label="Toggle navigation">
 	        <span class="oi oi-menu"></span> Menu
 	      </button>
 
 	      <div class="collapse navbar-collapse" id="ftco-nav">
 	        <ul class="navbar-nav ml-auto">
-	          <li class="nav-item active"><a href="index.html" class="nav-link">Home</a></li>
+	          <li class="nav-item active"><a href="#" class="nav-link">Home</a></li>
 	          <li class="nav-item dropdown">
               <a class="nav-link dropdown-toggle" href="#" id="dropdown04" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Shop</a>
               <div class="dropdown-menu" aria-labelledby="dropdown04">
@@ -50,6 +58,7 @@
 								<% } else {%>
 										<a class="dropdown-item" href="/logout">Signout</a>
 										<a href="/wholeSellerListing" class="dropdown-item">List Product</a>
+                                        <a href="/profile" class="dropdown-item">Profile</a>
 										<!-- <div class="rating">
 												<p class="text-right">
 													<span class="ion-ios-star-outline"></span>
@@ -62,14 +71,15 @@
 								<% } %>
               </div>
             </li>
-	          <li class="nav-item"><a href="about.html" class="nav-link">About</a></li>
+	          <li class="nav-item"><a href="#about" class="nav-link">About</a></li>
 	          <!-- <li class="nav-item"><a href="blog.html" class="nav-link">Blog</a></li> -->
-						<li class="nav-item"><a href="contact.html" class="nav-link">Contact</a></li>
+						<li class="nav-item"><a href="#contact" class="nav-link">Contact</a></li>
 						<%if((authenticated<=0)){%>
 							<li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
 							<% } else {%>
 								<li class="nav-item"><a href="/logout" class="nav-link">Signout</a></li>
 								<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">List Product</a></li>
+                                <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>    
 								<% } %>
 						<li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 						
@@ -84,11 +94,11 @@
       <div class="overlay"></div>
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
-        	<h3 class="v">Modist - Time to get dress</h3>
-        	<h3 class="vr">Since - 1985</h3>
+        	<h3 class="v">Kisan Mandi - We grow and sell</h3>
+        	<h3 class="vr">Since - 2000</h3>
           <div class="col-md-11 ftco-animate text-center">
-            <h1>Le Stylist</h1>
-            <h2><span>Wear Your Dress</span></h2>
+            <h1>THE BEST FOOD MEGA MARKET</h1>
+            <h2><span>GROWING CLEAN AND FULL OF HEALTH PRODUCTS</span></h2>
           </div>
           <div class="mouse">
 						<a href="#" class="mouse-icon">
@@ -99,8 +109,11 @@
       </div>
     </div>
 
-    <div class="goto-here"></div>
-    
+		<div class="goto-here"></div>
+		<% if( req.user != undefined ) { %>
+			<% if(req.user.role != "Civilian"){ %> 
+
+		
     <section class="ftco-section ftco-product">
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
@@ -125,7 +138,11 @@
 														<div class="d-flex">
 															<div class="pricing">
 																<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
+																<p class="price"><span class="price-sale">Qty: <%= results[i].stock %></span></p>
+
 															</div>
+															<a href="/updateListing/<%= results[i].title %>/<%= results[i].price %>/<%= results[i].stock %>"><button>Update</button></a>
+															<a href="/deleteListing/<%= results[i].title %>/<%= results[i].price %>/<%= results[i].stock %>"><button>Delete</button></a>
 															<!-- <div class="rating">
 																<p class="text-right">
 																	<span class="ion-ios-star-outline"></span>
@@ -142,236 +159,14 @@
 											<% } %>
 									<% } %>
 							<% } %>
-	    				<!-- <div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p clas<div class="item">
-		    				<div class="product">1
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>1
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="images/gobhi.jpg" alt="Colorlib Template">
-			    					<span class="status">30%</span>
-			    				</a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-			    						</div>
-			    						<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-		    						</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="images/product-6.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>1
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>s="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>1
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>1
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="images/gobhi.jpg" alt="Colorlib Template">
-			    					<span class="status">30%</span>
-			    				</a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex">
-		    							<div class="pricing">
-			    							<p class="price"><span class="mr-2 price-dc">$120.00</span><span class="price-sale">$80.00</span></p>
-			    						</div>
-			    						<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-		    						</div>
-		    					</div>
-		    				</div>
-	    				</div>
-	    				<div class="item">
-		    				<div class="product">
-		    					<a href="#" class="img-prod"><img src="images/product-6.jpg" alt="Colorlib Template"></a>
-		    					<div class="text pt-3 px-3">
-		    						<h3><a href="#">Young Woman Wearing Dress</a></h3>
-		    						<div class="d-flex"1>
-		    							<div class="pricing">
-				    						<p class="price"><span>$120.00</span></p>
-				    					</div>
-				    					<div class="rating">
-			    							<p class="text-right">
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    								<span class="ion-ios-star-outline"></span>
-			    							</p>
-			    						</div>
-			    					</div>
-		    					</div>
-		    				</div>
-	    				</div> 
-    				</div> -->
+							<% } %>
+							<% } %>
     			</div>
     		</div>
     	</div>
     </section>
 
-    <section class="ftco-section ftco-no-pb ftco-no-pt bg-light">
+    <section id="about" class="ftco-section ftco-no-pb ftco-no-pt bg-light">
 			<div class="container">
 				<div class="row">
 					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/bg_2.jpg);">
@@ -382,7 +177,7 @@
 					<div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
 	          <div class="heading-section-bold mb-5 mt-md-5">
 	          	<div class="ml-md-0">
-		            <h2 class="mb-4">Modist <br>Online <br> <span>Fashion Shop</span></h2>
+		            <h2 class="mb-4"><span>E-Mandi</span></h2>
 	            </div>
 	          </div>
 	          <div class="pb-md-5">
@@ -394,14 +189,24 @@
 			</div>
 		</section>
 
+
+		
     <section class="ftco-section bg-light">
     	<div class="container">
 				<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
+						
           	<h1 class="big">Products</h1>
-            <h2 class="mb-4">Our Products</h2>
+						<h2 class="mb-4">Our Products</h2>
+						<% if(req.user !=undefined){ %>
+							<% if(req.user.role == "Farmer"){ %>
+								<div>Not buyable by FARMER</div>
+							<%} else { %>
+								<a href="viewProducts" style="margin-right: 0"> View All</a> 
+								<% } %>
+						<% }%>
           </div>
-        </div>    		
+				</div>   		
     	</div>
     	<div class="container-fluid">
     		<div class="row">
@@ -409,7 +214,7 @@
 						<% if(req.user == undefined){ %>
     			<div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+    					<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
     					<div class="text py-3 px-3">
 								<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
 								<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
@@ -417,15 +222,6 @@
     							<div class="pricing">
 		    						<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
 		    					</div>
-		    					<!-- <div class="rating">
-	    							<p class="text-right">
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    								<span class="ion-ios-star-outline"></span>
-	    							</p>
-	    						</div> -->
 	    					</div>
 	    					<hr>
     						<p class="bottom-area d-flex">
@@ -435,11 +231,12 @@
     					</div>
     				</div>
 					</div>
-						<% } else {%>
+						<% } else if(req.user.role == "Farmer"){%>
+							<% } else { %>
 							<% if(req.user.username != results[i].username){ %>
 								<div class="col-sm col-md-6 col-lg ftco-animate">
 										<div class="product">
-											<a href="#" class="img-prod"><img class="img-fluid" src="images/gobhi.jpg" alt="Colorlib Template"></a>
+											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
 											<div class="text py-3 px-3">
 												<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
 												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
@@ -447,15 +244,6 @@
 													<div class="pricing">
 														<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
 													</div>
-													<!-- <div class="rating">
-														<p class="text-right">
-															<span class="ion-ios-star-outline"></span>
-															<span class="ion-ios-star-outline"></span>
-															<span class="ion-ios-star-outline"></span>
-															<span class="ion-ios-star-outline"></span>
-															<span class="ion-ios-star-outline"></span>
-														</p>
-													</div> -->
 												</div>
 												<hr>
 												<p class="bottom-area d-flex">
@@ -464,9 +252,10 @@
 											</div>
 										</div>
 									</div>
+								<% } %>
 							<% } %>
 						<% } %>
-					<% } %>
+					
     			<!-- <div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
     					<a href="#" class="img-prod"><img class="img-fluid" src="images/product-2.jpg" alt="Colorlib Template"></a>
@@ -556,7 +345,7 @@
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section ftco-animate">
-          	<h2>Summer Sale</h2>
+          	<h2>Putting our heart & soul into the field</h2>
           </div>
         </div>
     	</div>
@@ -658,7 +447,7 @@
         <div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
             <h1 class="big">Blog</h1>
-            <h2>Recent Blog</h2>
+            <h2>How to use Mandi App?</h2>
           </div>
         </div>
         <div class="row d-flex">
@@ -667,7 +456,7 @@
               <a href="blog-single.html" class="block-20" style="background-image: url('images/image_1.jpg');">
               </a>
               <div class="text mt-3 d-block">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                <h3 class="heading mt-3"><a href="#"></a></h3>
                 <div class="meta mb-3">
                   <div><a href="#">Dec 6, 2018</a></div>
                   <div><a href="#">Admin</a></div>
@@ -820,7 +609,7 @@
       </div>
     </section>
 
-    <footer class="ftco-footer bg-light ftco-section">
+    <footer id="contact" class="ftco-footer bg-light ftco-section">
       <div class="container">
         <div class="row mb-5">
           <div class="col-md">
