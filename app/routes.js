@@ -2,7 +2,7 @@
 
 var fs = require('fs');
 var results;
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
@@ -97,6 +97,49 @@ module.exports = function(app, passport, url, path){
 		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
 
+	app.get('/admin',async (req,res) => {
+		const users_data=await connection.promise().query("Select * from users");
+		const wholesellers=await connection.promise().query("Select * from Wholeseller");
+		const retailers=await connection.promise().query("Select * from Retailer");
+		const farmers=await connection.promise().query("Select * from Farmer");
+		
+		res.render("admin.ejs",{
+			users_data:users_data[0],
+			wholesellers:wholesellers[0],
+			retailers:retailers[0],
+			farmers:farmers[0]
+		});
+	})
+
+	app.post('/updateDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const column_name=req.body.column_name.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const updated_value=req.body.updated_value.trim(' ');
+
+		if(table_name==="users"){
+			if(column_name && id && updated_value){
+				 let sql="update users set "+column_name+" = '"+updated_value+"' where id = '"+id+"'";
+				 connection.query(sql,(err,result) => {
+					 if(err) throw err;
+					 res.redirect('/admin');
+				 })
+			}
+		}
+
+		else{
+			if(table_name && column_name && title_name && id && updated_value){
+				let sql="update "+table_name+" set "+column_name+" = "+updated_value+" where id = '"+id+"' and title='"+title_name+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+		}
+	})
+
+
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -110,20 +153,28 @@ module.exports = function(app, passport, url, path){
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-		}),
-        function(req, res) {
-            console.log("hello");
+		failureRedirect : '/login', // redirect back to the login page if there is an error
+		failureFlash : true // allow flash messages
+	}),
+	(req, res) => {
+					console.log("hello");
 
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
-            } else {
-              req.session.cookie.expires = false;
-            }
-        res.redirect('/');
-    });
+		if (req.body.remember) {
+		  req.session.cookie.maxAge = 1000 * 60 * 3;
+		} else {
+		  req.session.cookie.expires = false;
+					}
+					
+			if(req.user["username"]==="admin"){
+					res.redirect("/admin");
+					//res.render("admin.ejs");
+
+					
+					//console.log(users_data[0][0].id);
+			}		
+			else				
+				res.redirect('/');
+});
 
 	// =====================================
 	// SIGNUP ==============================
