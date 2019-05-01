@@ -169,14 +169,48 @@ a.button:hover{
         <div id="wrap">
                 <div id="columns" class="columns_4">
                     <% for(var i=0;i<results.length;i++){ %>
-              <figure>
-              <img src="/public/images/upload_images/<%= results[i].image %>">
+              
+             
+              <% if(req.user == undefined){ %>
+                <figure>
+                <img src="/public/images/upload_images/<%= results[i].image %>">
                 <figcaption><%= results[i].title %></figcaption>
                 <span class="price">₹<%= results[i].price %></span><br>
                 <span class="price"> <%= results[i].state %></span>
                 <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
                 </figure>
-                
+                <% } else if(req.user.role == "Farmer"){%>
+                  <% } else if(req.user.role == "Wholeseller") { %>
+                    <% if(req.user.username != results[i].username && results[i].role=="Farmer"){ %>
+                      <figure>
+                          <img src="/public/images/upload_images/<%= results[i].image %>">
+                          <figcaption><%= results[i].title %></figcaption>
+                          <span class="price">₹<%= results[i].price %></span><br>
+                          <span class="price"> <%= results[i].state %></span>
+                          <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
+                          </figure>
+                    <% } %>
+                  <% } else if(req.user.role == "Retailer") { %>
+                    <% if(req.user.username != results[i].username && results[i].role=="Wholeseller"){ %>
+                      <figure>
+                          <img src="/public/images/upload_images/<%= results[i].image %>">
+                          <figcaption><%= results[i].title %></figcaption>
+                          <span class="price">₹<%= results[i].price %></span><br>
+                          <span class="price"> <%= results[i].state %></span>
+                          <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
+                          </figure>
+                      <% } %>
+                      <% } else if(req.user.role == "Civilian") { %>
+                        <% if(req.user.username != results[i].username && (results[i].role=="Wholeseller" || results[i].role=="Retailer")){ %>
+                          <figure>
+                              <img src="/public/images/upload_images/<%= results[i].image %>">
+                              <figcaption><%= results[i].title %></figcaption>
+                              <span class="price">₹<%= results[i].price %></span><br>
+                              <span class="price"> <%= results[i].state %></span>
+                              <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
+                              </figure> 
+                          <% } %>
+                          <% } %>
                 <!-- <figure>
                 <img src="https://i.imgur.com/sPxEkEI.jpg">
                 <figcaption>Green and Black Flowers</figcaption>

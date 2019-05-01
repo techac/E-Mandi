@@ -31,8 +31,9 @@ module.exports = function(app, passport, url, path){
 			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
 				if(err) throw err;
 				results = results.concat(result);
-				connection.query("SELECT * FROM Farmer INNER JOIN users on users.id=Farmer.id",function(err, reuslt){
+				connection.query("SELECT * FROM Farmer INNER JOIN users on users.id=Farmer.id",function(err, result){
 					if(err) throw err;
+					results = results.concat(result);
 					res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
 				});
 				
@@ -97,7 +98,7 @@ module.exports = function(app, passport, url, path){
 					if(result.length>0){
 						connection.query("UPDATE "+ role + " SET stock=stock+" + quantity +" WHERE title='"+ title+"' and id='"+ sellerID+"'",function(err,result){
 							if(err) throw err;
-							res.redirect('/cart.html');
+							res.redirect('/cart.html');d
 						});
 					}	
 					else{
@@ -119,10 +120,17 @@ module.exports = function(app, passport, url, path){
 			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
 				if(err) throw err;
 				results = results.concat(result);
-				console.log(results);
+				connection.query("SELECT * FROM Farmer INNER JOIN users ON users.id=Farmer.id", function(err, result){
+					if(err) throw err;
+
+					results = results.concat(result);
+					console.log(results);
+					res.render('viewAll.ejs',{results: results,req:req});
+				});
+				// console.log(results);
 				
 				// console.log(objs);
-				res.render('viewAll.ejs',{results: results,req:req});
+				
 			});
 			
 			// setValue(result);
@@ -150,9 +158,13 @@ module.exports = function(app, passport, url, path){
 				if(err) throw err;
 				results = results.concat(result);
 				console.log(results);
+				connection.query("SELECT * FROM Farmer INNER JOIN users ON users.id=Farmer.id where state='"+ state+"'", function(err, result){
+					results= results.concat(result);
+					res.render('viewAll.ejs',{results: results,req:req});
+				});
 				
 				// console.log(objs);
-				res.render('viewAll.ejs',{results: results,req:req});
+			
 			});
 			
 			// setValue(result);
