@@ -69,7 +69,7 @@ module.exports = function(app, passport, url, path){
 		});
 	});
 
-	app.post('/updateListing',function(req,res){
+	app.post('/updateListing',isLoggedIn, function(req,res){
 		var title = req.body.title;
 		var price = req.body.price;
 		var stock = req.body.stock;
