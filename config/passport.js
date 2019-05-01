@@ -9,7 +9,9 @@ var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('./database');
 var connection = mysql.createConnection(dbconfig.connection);
 
+connection.query('create database if not exists '+dbconfig.database);
 connection.query('USE ' + dbconfig.database);
+
 // expose this function to our app using module.exports
 module.exports = function(passport) {
 
@@ -55,7 +57,6 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Wholeseller ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\
@@ -66,7 +67,6 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Retailer ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\
@@ -77,7 +77,6 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\

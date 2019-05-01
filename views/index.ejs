@@ -83,9 +83,12 @@
 								<% if(req.user.role != "Civilian") { %>
 								<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">List Product</a></li>
 								<% } %>
-                                <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>    
+										<li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li> 
+										<li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+   
 								<% } %>
-						<li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
+						
+						
 						
 
 	        </ul>
@@ -99,7 +102,7 @@
       <div class="container">
         <div class="row no-gutters slider-text js-fullheight align-items-center justify-content-center">
         	<h3 class="v">Kisan Mandi - We grow and sell</h3>
-        	<h3 class="vr">Since - 2000</h3>
+        	<h3 class="vr">Since - 2019</h3>
           <div class="col-md-11 ftco-animate text-center">
             <h1>THE BEST FOOD MEGA MARKET</h1>
             <h2><span>GROWING CLEAN AND FULL OF HEALTH PRODUCTS</span></h2>
@@ -134,11 +137,11 @@
 									<% if(results[i].username == req.user.username){ %>
 										<div class="item">
 												<div class="product">
-													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template">
+													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].title %>.jpeg" alt="Colorlib Template">
 														<!-- <span class="status">30%</span> -->
 													</a>
 													<div class="text pt-3 px-3">
-														<h3><a href="#"> <%= results[i].title %></a></h3>
+														<h3 class="font-weight-bold"><a href="#"> <%= results[i].title %></a></h3>
 														<div class="d-flex">
 															<div class="pricing">
 																<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
@@ -173,10 +176,7 @@
     <section id="about" class="ftco-section ftco-no-pb ftco-no-pt bg-light">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/bg_2.jpg);">
-						<a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
-							<span class="icon-play"></span>
-						</a>
+					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/emandi-banner.png);">
 					</div>
 					<div class="col-md-7 py-5 wrap-about pb-md-5 ftco-animate">
 	          <div class="heading-section-bold mb-5 mt-md-5">
@@ -203,7 +203,7 @@
           	<h1 class="big">Products</h1>
 						<h2 class="mb-4">Our Products</h2>
 						<% if(req.user !=undefined){ %>
-							<% if(req.user.role == "Farmer"){ %>
+							<% if(req.user.role == "farmer"){ %>
 								<div>Not buyable by FARMER</div>
 							<%} else { %>
 								<a href="viewProducts" style="margin-right: 0"> View All</a> 
@@ -218,32 +218,27 @@
 						<% if(req.user == undefined){ %>
     			<div class="col-sm col-md-6 col-lg ftco-animate">
     				<div class="product">
-    					<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+    					<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].title %>.jpeg" alt="Colorlib Template"></a>
     					<div class="text py-3 px-3">
-								<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
-								<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+								<h3 class="font-weight-bold"><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+								<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %> (<%= results[i].role %>)</a></h3>
     						<div class="d-flex">
     							<div class="pricing">
 		    						<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
 		    					</div>
 	    					</div>
-	    					<hr>
-    						<p class="bottom-area d-flex">
-    							<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
-    							<!-- <a href="#" class="ml-auto"><span><i class="ion-ios-heart-empty"></i></span></a> -->
-    						</p>
     					</div>
     				</div>
 					</div>
-						<% } else if(req.user.role == "Farmer"){%>
-							<% } else if(req.user.role == "Wholeseller") { %>
-							<% if(req.user.username != results[i].username && results[i].role=="Farmer"){ %>
+						<% } else if(req.user.role == "farmer"){ %>
+							<% }else if(req.user.role == "wholeseller") { %>
+							<% if(results[i].role=="farmer"){ %>
 								<div class="col-sm col-md-6 col-lg ftco-animate">
 										<div class="product">
-											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].title %>.jpeg" alt="Colorlib Template"></a>
 											<div class="text py-3 px-3">
-												<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
-												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+												<h3 class="font-weight-bold"><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %> (<%= results[i].role %>)</a></h3>
 												<div class="d-flex">
 													<div anujclass="pricing">
 														<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
@@ -260,14 +255,14 @@
 							
 
 
-							<% } else if(req.user.role == "Retailer") { %>
-								<% if(req.user.username != results[i].username && results[i].role=="Wholeseller"){ %>
+							<% } else if(req.user.role == "retailer") { %>
+								<% if(req.user.username != results[i].username && results[i].role=="wholeseller"){ %>
 									<div class="col-sm col-md-6 col-lg ftco-animate">
 											<div class="product">
-												<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+												<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].title %>.jpeg" alt="Colorlib Template"></a>
 												<div class="text py-3 px-3">
-													<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
-													<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+													<h3 class="font-weight-bold"><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+													<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %> (<%= results[i].role %>)</a></h3>
 													<div class="d-flex">
 														<div class="pricing">
 															<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
@@ -282,14 +277,14 @@
 										</div>
 									<% } %>
 
-								<% } else if(req.user.role == "Civilian") { %>
-									<% if(req.user.username != results[i].username && (results[i].role=="Wholeseller" || results[i].role=="Retailer")){ %>
+								<% } else if(req.user.role == "civilian") { %>
+									<% if(req.user.username != results[i].username && (results[i].role=="wholeseller" || results[i].role=="retailer")){ %>
 										<div class="col-sm col-md-6 col-lg ftco-animate">
 												<div class="product">
-													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].title %>.jpeg" alt="Colorlib Template"></a>
 													<div class="text py-3 px-3">
-														<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
-														<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+														<h3 class="font-weight-bold"><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+														<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %> (<%= results[i].role %>)</a></h3>
 														<div class="d-flex">
 															<div class="pricing">
 																<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
