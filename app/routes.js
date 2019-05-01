@@ -17,6 +17,7 @@ module.exports = function(app, passport, url, path){
 	
 	app.get('/', function(req, res) {
 		console.log(__dirname);
+		req.session.admin=false;
 		var isLoggedIn;
 		if(req.isAuthenticated()){
 			isLoggedIn = 1;
@@ -212,18 +213,50 @@ module.exports = function(app, passport, url, path){
 		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
 
-	app.get('/admin',async (req,res) => {
-		const users_data=await connection.promise().query("Select * from users");
-		const wholesellers=await connection.promise().query("Select * from Wholeseller");
-		const retailers=await connection.promise().query("Select * from Retailer");
-		const farmers=await connection.promise().query("Select * from Farmer");
+	app.get('/admin',isLoggedIn,async (req,res) => {
+
+		if(req.session.admin){
+					const users_data=await connection.promise().query("Select * from users");
+					const wholesellers=await connection.promise().query("Select * from Wholeseller");
+					const retailers=await connection.promise().query("Select * from Retailer");
+					const farmers=await connection.promise().query("Select * from Farmer");
+					
+					res.render("admin.ejs",{
+						users_data:users_data[0],
+						wholesellers:wholesellers[0],
+						retailers:retailers[0],
+						farmers:farmers[0]
+					});
+		}
+
+		else{
+			res.redirect('/');
+		}
 		
-		res.render("admin.ejs",{
-			users_data:users_data[0],
-			wholesellers:wholesellers[0],
-			retailers:retailers[0],
-			farmers:farmers[0]
-		});
+	})
+
+	app.post('/insertDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+		const stock=req.body.stock.trim(' ');
+		const price=req.body.price.trim(' ');
+
+		if(table_name && id && title_name && stock && price){
+			const sql="insert into "+table_name+" values(?,?,?,?)";
+			connection.query(sql,[id,title_name,stock,price],(err,result) => {
+				if(err) throw err;
+				res.redirect('/admin');
+	
+			})
+		}
+
+		else{
+			res.redirect('/admin');
+	
+		}
+
+		
 	})
 
 	app.post('/updateDatabase',(req,res) => {
@@ -241,6 +274,10 @@ module.exports = function(app, passport, url, path){
 					 res.redirect('/admin');
 				 })
 			}
+			else{
+				res.redirect('/admin');
+			}
+
 		}
 
 		else{
@@ -251,7 +288,50 @@ module.exports = function(app, passport, url, path){
 					res.redirect('/admin');
 				})
 			}
+
+			else{
+				res.redirect('/admin');
+
+			}
 		}
+
+	})
+
+	app.post('/deleteDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+
+		if(table_name==="users"){
+			if(id){
+				const sql="Delete from "+table_name+" where id='"+id+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+
+			else{
+				res.redirect('/admin');
+
+			}
+		}
+
+		else{
+			if(table_name && id && title_name){
+				const sql="Delete from "+table_name+" where id='"+id+"' and title='"+title_name+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+
+			else{
+				res.redirect('/admin');
+
+			}
+		}
+
 	})
 
 
@@ -281,11 +361,10 @@ module.exports = function(app, passport, url, path){
 					}
 					
 			if(req.user["username"]==="admin"){
+					req.session.admin=true;
 					res.redirect("/admin");
-					//res.render("admin.ejs");
-
 					
-					//console.log(users_data[0][0].id);
+					//res.render("admin.ejs");		//console.log(users_data[0][0].id);
 			}		
 			else				
 				res.redirect('/');
