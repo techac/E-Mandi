@@ -119,7 +119,8 @@
 		<% if( req.user != undefined ) { %>
 			<% if(req.user.role != "Civilian"){ %> 
 
-		
+	<br>
+      
     <section class="ftco-section ftco-product">
     	<div class="container">
     		<div class="row justify-content-center mb-3 pb-3">
@@ -169,13 +170,17 @@
 							<% } %>
     			</div>
     		</div>
+            </div>
     	</div>
     </section>
+      
+      <br>
+      <br>
 
     <section id="about" class="ftco-section ftco-no-pb ftco-no-pt bg-light">
 			<div class="container">
 				<div class="row">
-					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/img3.jpg);">
+					<div class="col-md-5 p-md-5 img img-2 d-flex justify-content-center align-items-center" style="background-image: url(images/img3.jpg); box-shadow: 10px 10px  5px 5px #aaaaaa;">
 <!--
 						<a href="https://vimeo.com/45830194" class="icon popup-vimeo d-flex justify-content-center align-items-center">
 							<span class="icon-play"></span>
@@ -213,16 +218,17 @@
 								<div>Not buyable by FARMER</div>
 							<%} else { %>
                                 <div>
-                                    <button type="submit" class="btn btn-basic btn-lg"><a href="viewProducts" style="margin-right: 0"> View All</a></button>
+                                    
                                 </div> 
 								<% } %>
 						<% } %>
+                        <button type="submit" class="btn btn-basic btn-lg"><a href="viewProducts" style="margin-right: 0"> View All</a></button>
           </div>
 				</div>   		
     	</div>
     	<div class="container-fluid">
     		<div class="row">
-					<% for(var i=0;i<results.length;i++){ %>
+					<% for(var i=0;i< 5;i++){ %>
 						<% if(req.user == undefined){ %>
 							<div class="col-sm col-md-6 col-lg ftco-animate">
 								<div class="product">
@@ -260,8 +266,13 @@
 											<hr>
 											<p class="bottom-area d-flex"></p>
 											<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-												<input type="number" name="quantity" max="<%= results[i].stock %>">
-												<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                                                <label>Quantity</label>
+
+                                                <div >
+                                                    <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+												<button type="submit" class="btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button> 
+                                                </div>
+												
 											</form>
 											</p>
 										
@@ -288,8 +299,15 @@
 													<hr>
 													<p class="bottom-area d-flex"></p>
 													<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-														<input type="number" name="quantity" max="<%= results[i].stock %>">
-														<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                                                                                                            <label>Quantity</label>
+
+                                                        <div>
+                                    
+                                                        
+                                                            <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+														<button type="submit" class="row1 btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button>
+                                                        </div>
+														 
 													</form>
 													</p>
 												
@@ -314,8 +332,13 @@
 														<hr>
 														<p class="bottom-area d-flex"></p>
 														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-															<input type="number" name="quantity" max="<%= results[i].stock %>">
-															<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                                                                                                                <label>Quantity</label>
+
+															<div >
+                                                            
+                                                                <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+															<button type="submit" class="row1 btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button> 
+                                                            </div>
 														</form>
 														</p>
 													
@@ -519,7 +542,7 @@
         <div class="row justify-content-center mb-3 pb-3">
           <div class="col-md-12 heading-section text-center ftco-animate">
             <h1 class="big">Concern</h1>
-            <h2>We Care For U</h2>
+            <h2>We Care For You</h2>
           </div>
         </div>
         <div class="row d-flex">
@@ -528,9 +551,10 @@
               <a href="blog-single.html" class="block-20" style="background-image: url('images/img18.jpg');">
               </a>
               <div class="text mt-3 d-block">
-                <h3 class="heading mt-3">We Care For U chgvkbjlndxgfchgvjhbkjnlmk<a href="#"></a></h3>
+                <h3 class="heading mt-3">Retailer<br>
+                    A business or company that sells to the consumer directly.<a href="#"></a></h3>
                 <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
+                  <div><a href="#">April 22, 2019</a></div>
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                 </div>
@@ -542,9 +566,10 @@
               <a href="blog-single.html" class="block-20" style="background-image: url('images/img20.jpg');">
               </a>
               <div class="text mt-3">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                <h3 class="heading mt-3"><a href="#">Farmer<br>
+                    A farmer who raises only crops will be responsible for preparing land for planting, caring for the crops and harvesting.</a></h3>
                 <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
+                  <div><a href="#">April 22, 2019</a></div>
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                 </div>
@@ -556,9 +581,10 @@
               <a href="blog-single.html" class="block-20" style="background-image: url('images/img19.jpg');">
               </a>
               <div class="text mt-3">
-                <h3 class="heading mt-3"><a href="#">Even the all-powerful Pointing has no control about the blind texts</a></h3>
+                <h3 class="heading mt-3"><a href="#">Customers<br>
+                    A person who buys goods or services from a shop or business.</a></h3>
                 <div class="meta mb-3">
-                  <div><a href="#">Dec 6, 2018</a></div>
+                  <div><a href="#">April 22, 2019</a></div>
                   <div><a href="#">Admin</a></div>
                   <div><a href="#" class="meta-chat"><span class="icon-chat"></span> 3</a></div>
                 </div>
@@ -746,7 +772,7 @@
 						</p>-->
               
               
-<p>Made With <i class="icon-heart color-danger" aria-hidden="true"></i></p>
+<p>Made With <i class="icon-heart color-danger" aria-hidden="true"></i> By Group No 18</p>
           </div>
         </div>
       </div>
