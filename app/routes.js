@@ -148,7 +148,7 @@ module.exports = function(app, passport, url, path){
 	app.get('/viewProducts/:state', function(req,res){
 		var state = req.params.state;
 		if(state == 'All'){
-			res.redirect('/viewProducts');
+			res.redirect('/viewProducts/');
 		}
 		console.log(state);
 		connection.query("SELECT * FROM Wholeseller INNER JOIN users ON users.id=Wholeseller.id where state='"+ state+"'",function(err, result){

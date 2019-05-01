@@ -41,7 +41,7 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Cart ( \
         `id` INT UNSIGNED NOT NULL, \
         `title` VARCHAR(255) NOT NULL, \
-        `image` VARCHAR(250) NOT NULL,\
+        `image` VARCHAR(250) ,\
         `price` INT NOT NULL, \
         `quantity` INT NOT NULL, \
         `sellerID` INT UNSIGNED NOT NULL, \
@@ -56,7 +56,7 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Wholeseller ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
+        `image` varchar(250) ,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\
@@ -67,7 +67,7 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Retailer ( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
+        `image` varchar(250) ,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\
@@ -78,7 +78,7 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Farmer( \
         `id` INT UNSIGNED NOT NULL,\
         `title` VARCHAR(255) NOT NULL,\
-        `image` varchar(250) NOT NULL,\
+        `image` varchar(250) ,\
         `price` INT,\
         `stock` INT,\
         FOREIGN KEY (id) REFERENCES users(id)\
@@ -187,8 +187,8 @@ module.exports = function(passport) {
 //         [77,'Tulsi','Spice'] ,
 //         [78,'Turmeric','Spice']
 //     ];
-//        
-//         
+// //        
+// //         
 //   connection.query(sql,[items], function (err, result) {
 //     if (err) throw err;
 //     console.log(result.affectedRows + " records inserted");

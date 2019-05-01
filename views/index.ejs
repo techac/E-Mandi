@@ -85,8 +85,10 @@
 						<%if((authenticated<=0)){%>
 							<li class="nav-item"><a href="/login" class="nav-link">Login</a></li>
 				        <% } else {%>
-				            <li class="nav-item"><a href="/logout" class="nav-link">Signout</a></li>
-				            <li class="nav-item"><a href="/wholeSellerListing" class="nav-link">Post</a></li>
+										<li class="nav-item"><a href="/logout" class="nav-link">Signout</a></li>
+										<% if(req.user.role != "Civilian"){ %>}
+											<li class="nav-item"><a href="/wholeSellerListing" class="nav-link">Post</a></li>
+										<% } %>
                             <li class="nav-item"><a href="/profile" class="nav-link">Profile</a></li>  
                             <li class="nav-item cta cta-colored"><a href="cart.html" class="nav-link"><span class="icon-shopping_cart"></span>[0]</a></li>
 				        <% } %>
@@ -260,7 +262,7 @@
 											<hr>
 											<p class="bottom-area d-flex"></p>
 											<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-												<input type="number" name="quantity" max="<%= results[i].stock %>">
+												<input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
 												<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
 											</form>
 											</p>
@@ -288,7 +290,7 @@
 													<hr>
 													<p class="bottom-area d-flex"></p>
 													<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-														<input type="number" name="quantity" max="<%= results[i].stock %>">
+														<input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
 														<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
 													</form>
 													</p>
@@ -314,7 +316,7 @@
 														<hr>
 														<p class="bottom-area d-flex"></p>
 														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-															<input type="number" name="quantity" max="<%= results[i].stock %>">
+															<input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
 															<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
 														</form>
 														</p>
