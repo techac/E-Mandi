@@ -296,9 +296,13 @@
 															</div>
 														</div>
 														<hr>
-														<p class="bottom-area d-flex">
-															<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+														<p class="bottom-area d-flex"></p>
+														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+															<input type="number" name="quantity" max="<%= results[i].stock %>">
+															<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+														</form>
 														</p>
+													
 													</div>
 												</div>
 											</div>

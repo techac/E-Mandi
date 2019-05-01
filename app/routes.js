@@ -168,22 +168,23 @@ module.exports = function(app, passport, url, path){
 
 
 
-	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
+	app.post("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
 		var role = req.params.role;
 		var price = req.params.price;
-		console.log(username);
+		var quantityToAdd = req.body.quantity;
+		console.log(quantityToAdd);
 		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
 			if(err) throw err;
 			var id = result[0].id;
 			connection.query("SELECT * FROM Cart where title='"+ title + "' and sellerID='"+ result[0].id + "' and price='" + price + "' and id='"+ req.user.id + "'",function(err,result){
 				if(err) throw err;
 				if(result.length>0){
-					connection.query("UPDATE Cart SET quantity=quantity+1 where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
+					connection.query("UPDATE Cart SET quantity=quantity+"+ quantityToAdd+" where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
 			 		function(err,result){
 					if(err) throw err;
-					connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+					connection.query("UPDATE "+ role+ " SET stock=stock-"+ quantityToAdd+" WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
 						if(err) throw err;
 						connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
 							console.log(result);
@@ -193,10 +194,10 @@ module.exports = function(app, passport, url, path){
 			}); 
 				}
 				else{
-					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, 1, id],
+					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, quantityToAdd, id],
 					function(err,result){
 						if(err) throw err;
-						connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+						connection.query("UPDATE "+ role+ " SET stock=stock-"+ quantityToAdd+" WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
 							if(err) throw err;
 							connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
 								console.log(result);
