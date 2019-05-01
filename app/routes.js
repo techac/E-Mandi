@@ -2,9 +2,7 @@
 
 var fs = require('fs');
 var results;
-var fileUpload = require('express-fileupload');
-var busboy = require('busboy');
-var mysql = require('mysql');
+var mysql = require('mysql2');
 var bcrypt = require('bcrypt-nodejs');
 var dbconfig = require('../config/database');
 var connection = mysql.createConnection(dbconfig.connection);
@@ -19,6 +17,7 @@ module.exports = function(app, passport, url, path){
 	
 	app.get('/', function(req, res) {
 		console.log(__dirname);
+		req.session.admin=false;
 		var isLoggedIn;
 		if(req.isAuthenticated()){
 			isLoggedIn = 1;
@@ -33,8 +32,11 @@ module.exports = function(app, passport, url, path){
 			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
 				if(err) throw err;
 				results = results.concat(result);
-				console.log(req.user);
-				res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
+				connection.query("SELECT * FROM Farmer INNER JOIN users on users.id=Farmer.id",function(err, reuslt){
+					if(err) throw err;
+					res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
+				});
+				
 			});
 		});
 		
@@ -167,22 +169,23 @@ module.exports = function(app, passport, url, path){
 
 
 
-	app.get("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
+	app.post("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
 		var role = req.params.role;
 		var price = req.params.price;
-		console.log(username);
+		var quantityToAdd = req.body.quantity;
+		console.log(quantityToAdd);
 		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
 			if(err) throw err;
 			var id = result[0].id;
 			connection.query("SELECT * FROM Cart where title='"+ title + "' and sellerID='"+ result[0].id + "' and price='" + price + "' and id='"+ req.user.id + "'",function(err,result){
 				if(err) throw err;
 				if(result.length>0){
-					connection.query("UPDATE Cart SET quantity=quantity+1 where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
+					connection.query("UPDATE Cart SET quantity=quantity+"+ quantityToAdd+" where title='"+ title + "' and sellerID='"+ id + "' and price='" + price + "' and id='"+ req.user.id + "'",
 			 		function(err,result){
 					if(err) throw err;
-					connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+					connection.query("UPDATE "+ role+ " SET stock=stock-"+ quantityToAdd+" WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
 						if(err) throw err;
 						connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
 							console.log(result);
@@ -192,10 +195,10 @@ module.exports = function(app, passport, url, path){
 			}); 
 				}
 				else{
-					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, 1, id],
+					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, quantityToAdd, id],
 					function(err,result){
 						if(err) throw err;
-						connection.query("UPDATE "+ role+ " SET stock=stock-1 WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
+						connection.query("UPDATE "+ role+ " SET stock=stock-"+ quantityToAdd+" WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
 							if(err) throw err;
 							connection.query("DELETE FROM "+ role +" where stock<=0",function(err,result){
 								console.log(result);
@@ -210,6 +213,128 @@ module.exports = function(app, passport, url, path){
 		// connection.query("UPDATE Wholeseller SET stock=stock-1 WHERE ")
 	});
 
+	app.get('/admin',isLoggedIn,async (req,res) => {
+
+		if(req.session.admin){
+					const users_data=await connection.promise().query("Select * from users");
+					const wholesellers=await connection.promise().query("Select * from Wholeseller");
+					const retailers=await connection.promise().query("Select * from Retailer");
+					const farmers=await connection.promise().query("Select * from Farmer");
+					
+					res.render("admin.ejs",{
+						users_data:users_data[0],
+						wholesellers:wholesellers[0],
+						retailers:retailers[0],
+						farmers:farmers[0]
+					});
+		}
+
+		else{
+			res.redirect('/');
+		}
+		
+	})
+
+	app.post('/insertDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+		const stock=req.body.stock.trim(' ');
+		const price=req.body.price.trim(' ');
+
+		if(table_name && id && title_name && stock && price){
+			const sql="insert into "+table_name+" values(?,?,?,?)";
+			connection.query(sql,[id,title_name,stock,price],(err,result) => {
+				if(err) throw err;
+				res.redirect('/admin');
+	
+			})
+		}
+
+		else{
+			res.redirect('/admin');
+	
+		}
+
+		
+	})
+
+	app.post('/updateDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const column_name=req.body.column_name.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const updated_value=req.body.updated_value.trim(' ');
+
+		if(table_name==="users"){
+			if(column_name && id && updated_value){
+				 let sql="update users set "+column_name+" = '"+updated_value+"' where id = '"+id+"'";
+				 connection.query(sql,(err,result) => {
+					 if(err) throw err;
+					 res.redirect('/admin');
+				 })
+			}
+			else{
+				res.redirect('/admin');
+			}
+
+		}
+
+		else{
+			if(table_name && column_name && title_name && id && updated_value){
+				let sql="update "+table_name+" set "+column_name+" = "+updated_value+" where id = '"+id+"' and title='"+title_name+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+
+			else{
+				res.redirect('/admin');
+
+			}
+		}
+
+	})
+
+	app.post('/deleteDatabase',(req,res) => {
+		const table_name=req.body.table_name.trim(' ');
+		const id=req.body.id.trim(' ');
+		const title_name=req.body.title_name.trim(' ');
+
+		if(table_name==="users"){
+			if(id){
+				const sql="Delete from "+table_name+" where id='"+id+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+
+			else{
+				res.redirect('/admin');
+
+			}
+		}
+
+		else{
+			if(table_name && id && title_name){
+				const sql="Delete from "+table_name+" where id='"+id+"' and title='"+title_name+"'";
+				connection.query(sql,(err,result) => {
+					if(err) throw err;
+					res.redirect('/admin');
+				})
+			}
+
+			else{
+				res.redirect('/admin');
+
+			}
+		}
+
+	})
+
+
 	// =====================================
 	// LOGIN ===============================
 	// =====================================
@@ -223,20 +348,27 @@ module.exports = function(app, passport, url, path){
 
 	// process the login form
 	app.post('/login', passport.authenticate('local-login', {
-            successRedirect : '/', // redirect to the secure profile section
-            failureRedirect : '/login', // redirect back to the signup page if there is an error
-            failureFlash : true // allow flash messages
-		}),
-        function(req, res) {
-            console.log("hello");
+		failureRedirect : '/login', // redirect back to the login page if there is an error
+		failureFlash : true // allow flash messages
+	}),
+	(req, res) => {
+					console.log("hello");
 
-            if (req.body.remember) {
-              req.session.cookie.maxAge = 1000 * 60 * 3;
-            } else {
-              req.session.cookie.expires = false;
-            }
-        res.redirect('/');
-    });
+		if (req.body.remember) {
+		  req.session.cookie.maxAge = 1000 * 60 * 3;
+		} else {
+		  req.session.cookie.expires = false;
+					}
+					
+			if(req.user["username"]==="admin"){
+					req.session.admin=true;
+					res.redirect("/admin");
+					
+					//res.render("admin.ejs");		//console.log(users_data[0][0].id);
+			}		
+			else				
+				res.redirect('/');
+});
 
 	// =====================================
 	// SIGNUP ==============================

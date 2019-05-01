@@ -59,9 +59,13 @@
 										<a class="dropdown-item" href="/login">Login</a>
 								<% } else {%>
 										<a class="dropdown-item" href="/logout">Signout</a>
+										<% if(req.user.role != "Civilian") { %>
 										<a href="/wholeSellerListing" class="dropdown-item">List Product</a>
                                         <a href="/profile" class="dropdown-item">Profile</a>
 										 <div class="rating">
+										<% } %>
+                    <a href="/profile" class="dropdown-item">Profile</a>
+										<!-- <div class="rating">
 												<p class="text-right">
 													<span class="ion-ios-star-outline"></span>
 													<span class="ion-ios-star-outline"></span>
@@ -212,7 +216,7 @@
                                     <button type="submit" class="btn btn-basic btn-lg"><a href="viewProducts" style="margin-right: 0"> View All</a></button>
                                 </div> 
 								<% } %>
-						<% }%>
+						<% } %>
           </div>
 				</div>   		
     	</div>
@@ -240,8 +244,8 @@
     				</div>
 					</div>
 						<% } else if(req.user.role == "Farmer"){%>
-							<% } else { %>
-							<% if(req.user.username != results[i].username){ %>
+							<% } else if(req.user.role == "Wholeseller") { %>
+							<% if(req.user.username != results[i].username && results[i].role=="Farmer"){ %>
 								<div class="col-sm col-md-6 col-lg ftco-animate">
 										<div class="product">
 											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
@@ -249,7 +253,7 @@
 												<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
 												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
 												<div class="d-flex">
-													<div class="pricing">
+													<div anujclass="pricing">
 														<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
 													</div>
 												</div>
@@ -261,7 +265,57 @@
 										</div>
 									</div>
 								<% } %>
-							<% } %>
+							
+
+
+							<% } else if(req.user.role == "Retailer") { %>
+								<% if(req.user.username != results[i].username && results[i].role=="Wholeseller"){ %>
+									<div class="col-sm col-md-6 col-lg ftco-animate">
+											<div class="product">
+												<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+												<div class="text py-3 px-3">
+													<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+													<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+													<div class="d-flex">
+														<div class="pricing">
+															<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+														</div>
+													</div>
+													<hr>
+													<p class="bottom-area d-flex">
+														<a href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" class="add-to-cart" ><span>Add to cart <i class="ion-ios-add ml-1"></i></span></a>
+													</p>
+												</div>
+											</div>
+										</div>
+									<% } %>
+
+								<% } else if(req.user.role == "Civilian") { %>
+									<% if(req.user.username != results[i].username && (results[i].role=="Wholeseller" || results[i].role=="Retailer")){ %>
+										<div class="col-sm col-md-6 col-lg ftco-animate">
+												<div class="product">
+													<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+													<div class="text py-3 px-3">
+														<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+														<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+														<div class="d-flex">
+															<div class="pricing">
+																<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+															</div>
+														</div>
+														<hr>
+														<p class="bottom-area d-flex"></p>
+														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+															<input type="number" name="quantity" max="<%= results[i].stock %>">
+															<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+														</form>
+														</p>
+													
+													</div>
+												</div>
+											</div>
+										<% } %>
+									<% } %>
 						<% } %>
 					
     			<!-- <div class="col-sm col-md-6 col-lg ftco-animate">
