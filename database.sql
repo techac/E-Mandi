@@ -1,3 +1,4 @@
+create database if not exists my_schema;
 use my_schema;
 
 CREATE TABLE IF NOT EXISTS users( 
