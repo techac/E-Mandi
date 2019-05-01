@@ -83,12 +83,13 @@ module.exports = function(app, passport, url, path){
 		});
 	});
 
-	app.get("/deleteItemCart/:id/:sellerID/:title/:quantity/:price",function(req,res){
+	app.get("/deleteItemCart/:id/:sellerID/:title/:quantity/:price/:image",function(req,res){
 		id = req.params.id;
 		sellerID = req.params.sellerID;
 		title = req.params.title;
 		quantity = req.params.quantity;
 		price = req.params.price;
+		image = req.params.image;
 		connection.query("DELETE FROM Cart WHERE id='" + id +"' and sellerID='"+ sellerID +"' and title='"+ title +"'",function(err,result){
 			if(err) throw err;
 			connection.query("SELECT * from users WHERE id='"+ sellerID +"'",function(err,result){
@@ -99,11 +100,11 @@ module.exports = function(app, passport, url, path){
 					if(result.length>0){
 						connection.query("UPDATE "+ role + " SET stock=stock+" + quantity +" WHERE title='"+ title+"' and id='"+ sellerID+"'",function(err,result){
 							if(err) throw err;
-							res.redirect('/cart.html');d
+							res.redirect('/cart.html');
 						});
 					}	
 					else{
-						connection.query("INSERT INTO "+role+ " VALUES (?,?,?,?)",[sellerID, title,price,quantity ],function(err,result){
+						connection.query("INSERT INTO "+role+ " VALUES (?,?,?,?,?)",[sellerID, title,image,price,quantity ],function(err,result){
 							if(err) throw err;
 							res.redirect("/cart.html");
 						});
@@ -123,7 +124,6 @@ module.exports = function(app, passport, url, path){
 				results = results.concat(result);
 				connection.query("SELECT * FROM Farmer INNER JOIN users ON users.id=Farmer.id", function(err, result){
 					if(err) throw err;
-
 					results = results.concat(result);
 					console.log(results);
 					res.render('viewAll.ejs',{results: results,req:req});
@@ -181,11 +181,12 @@ module.exports = function(app, passport, url, path){
 
 
 
-	app.post("/makeTransaction/:title/:username/:role/:price",isLoggedIn, function(req,res){
+	app.post("/makeTransaction/:title/:username/:role/:price/:image",isLoggedIn, function(req,res){
 		var title = req.params.title;
 		var username = req.params.username;
 		var role = req.params.role;
 		var price = req.params.price;
+		var image = req.params.image;
 		var quantityToAdd = req.body.quantity;
 		console.log(quantityToAdd);
 		connection.query("SELECT id from users where username='" + username+ "'", function(err,result){
@@ -207,7 +208,7 @@ module.exports = function(app, passport, url, path){
 			}); 
 				}
 				else{
-					connection.query("INSERT INTO Cart (id, title, price, quantity, sellerID) values (?,?,?,?,?)",[req.user.id, title, price, quantityToAdd, id],
+					connection.query("INSERT INTO Cart (id, title,image, price, quantity, sellerID) values (?,?,?,?,?,?)",[req.user.id, title,image, price, quantityToAdd, id],
 					function(err,result){
 						if(err) throw err;
 						connection.query("UPDATE "+ role+ " SET stock=stock-"+ quantityToAdd+" WHERE id='"+ id + "' and title='"+ title+ "'", function(err, result){
@@ -527,5 +528,5 @@ function isLoggedIn(req, res, next) {
 	if (req.isAuthenticated())
 		return next();
 	// if they aren't redirect them to the home page
-	res.redirect('/');
+	res.redirect('/login');
 };

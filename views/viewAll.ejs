@@ -177,7 +177,6 @@ a.button:hover{
                 <figcaption><%= results[i].title %></figcaption>
                 <span class="price">₹<%= results[i].price %></span><br>
                 <span class="price"> <%= results[i].state %></span>
-                <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
                 </figure>
                 <% } else if(req.user.role == "Farmer"){%>
                   <% } else if(req.user.role == "Wholeseller") { %>
@@ -187,7 +186,10 @@ a.button:hover{
                           <figcaption><%= results[i].title %></figcaption>
                           <span class="price">₹<%= results[i].price %></span><br>
                           <span class="price"> <%= results[i].state %></span>
-                          <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
+                          <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+                            <input type="number" name="quantity" max="<%= results[i].stock %>">
+                            <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                          </form>
                           </figure>
                     <% } %>
                   <% } else if(req.user.role == "Retailer") { %>
@@ -197,7 +199,10 @@ a.button:hover{
                           <figcaption><%= results[i].title %></figcaption>
                           <span class="price">₹<%= results[i].price %></span><br>
                           <span class="price"> <%= results[i].state %></span>
-                          <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
+                          <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+                            <input type="number" name="quantity" max="<%= results[i].stock %>">
+                            <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                          </form>
                           </figure>
                       <% } %>
                       <% } else if(req.user.role == "Civilian") { %>
@@ -207,8 +212,11 @@ a.button:hover{
                               <figcaption><%= results[i].title %></figcaption>
                               <span class="price">₹<%= results[i].price %></span><br>
                               <span class="price"> <%= results[i].state %></span>
-                              <a class="button" href="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>">Buy Now</a>
-                              </figure> 
+                              <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+                                <input type="number" name="quantity" max="<%= results[i].stock %>">
+                                <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+                              </form>
+                              </figure>
                           <% } %>
                           <% } %>
                 <!-- <figure>

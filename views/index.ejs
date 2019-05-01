@@ -229,10 +229,7 @@
 										</div>
 										<hr>
 										<p class="bottom-area d-flex"></p>
-										<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
-											<input type="number" name="quantity" max="<%= results[i].stock %>">
-											<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
-										</form>
+									
 										</p>
 									
 									</div>
@@ -254,7 +251,7 @@
 											</div>
 											<hr>
 											<p class="bottom-area d-flex"></p>
-											<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+											<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
 												<input type="number" name="quantity" max="<%= results[i].stock %>">
 												<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
 											</form>
@@ -270,27 +267,27 @@
 							<% } else if(req.user.role == "Retailer") { %>
 								<% if(req.user.username != results[i].username && results[i].role=="Wholeseller"){ %>
 									<div class="col-sm col-md-6 col-lg ftco-animate">
-										<div class="product">
-											<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
-											<div class="text py-3 px-3">
-												<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
-												<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
-												<div class="d-flex">
-													<div class="pricing">
-														<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+											<div class="product">
+												<a href="#" class="img-prod"><img class="img-fluid" src="/public/images/upload_images/<%= results[i].image %>" alt="Colorlib Template"></a>
+												<div class="text py-3 px-3">
+													<h3><a href="#" name=<%= results[i].title %> class="resultTitle"> <%= results[i].title %></a></h3>
+													<h3><a href="#" name=<%= results[i].username %>>Sold By: <%= results[i].username %></a></h3>
+													<div class="d-flex">
+														<div class="pricing">
+															<a class="price resultPrice" name=<%= results[i].price %>><span>₹<%= results[i].price %></span></a>
+														</div>
 													</div>
+													<hr>
+													<p class="bottom-area d-flex"></p>
+													<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
+														<input type="number" name="quantity" max="<%= results[i].stock %>">
+														<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
+													</form>
+													</p>
+												
 												</div>
-												<hr>
-												<p class="bottom-area d-flex"></p>
-												<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
-													<input type="number" name="quantity" max="<%= results[i].stock %>">
-													<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
-												</form>
-												</p>
-											
 											</div>
 										</div>
-									</div>
 									<% } %>
 
 								<% } else if(req.user.role == "Civilian") { %>
@@ -308,7 +305,7 @@
 														</div>
 														<hr>
 														<p class="bottom-area d-flex"></p>
-														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>" method="POST">
+														<form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
 															<input type="number" name="quantity" max="<%= results[i].stock %>">
 															<button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
 														</form>

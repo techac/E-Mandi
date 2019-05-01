@@ -41,6 +41,7 @@ module.exports = function(passport) {
     connection.query("CREATE TABLE IF NOT EXISTS Cart ( \
         `id` INT UNSIGNED NOT NULL, \
         `title` VARCHAR(255) NOT NULL, \
+        `image` VARCHAR(250) NOT NULL,\
         `price` INT NOT NULL, \
         `quantity` INT NOT NULL, \
         `sellerID` INT UNSIGNED NOT NULL, \
