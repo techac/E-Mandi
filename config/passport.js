@@ -163,10 +163,34 @@ module.exports = function(passport) {
     //     [58,'Turmeric','Vegetable'] ,
     //     [59,'Turnip','Vegetable']
     // ]; 
-    			    
+    
+//     var sql = "INSERT INTO Items (id,name,category) VALUES ?";
+//     var items = [
+//         [60,'Ajwain','Spice'] ,
+//         [61,'Almond','Spice'] ,
+//         [62,'Black Pepper','Spice'] ,
+//         [63,'Cardamom','Spice'] ,
+//         [64,'Cinnamon','Spice'] ,    
+//         [65,'Clove','Spice'] ,         
+//         [66,'Coriander','Spice'] ,
+//         [67,'Cumin','Spice'] ,
+//         [68,'Curry Leaves','Spice'] ,
+//         [69,'Garlic','Spice'] ,
+//         [70,'Ginger','Spice'] ,
+//         [71,'Heeng','Spice'] ,
+//         [72,'Mint','Spice'] ,
+//         [73,'Mustard','Spice'] ,
+//         [74,'Red Chilli','Spice'] ,
+//         [75,'Saunf','Spice'] ,
+//         [76,'Tej Patta','Spice'] ,
+//         [77,'Tulsi','Spice'] ,
+//         [78,'Turmeric','Spice']
+//     ];
+//        
+//         
 //   connection.query(sql,[items], function (err, result) {
 //     if (err) throw err;
-//     console.log(result.affectedRows + "records inserted");
+//     console.log(result.affectedRows + " records inserted");
 //   });
     
     passport.serializeUser(function(user, done) {

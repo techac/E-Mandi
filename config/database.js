@@ -3,7 +3,7 @@ module.exports = {
     'connection': {
         'host': 'localhost',
         'user': 'root',
-        'password': '123456789.0Ac'
+        'password': 'Lovely@143'
     },
 	'database': 'my_schema',
     'users_table': 'users'
