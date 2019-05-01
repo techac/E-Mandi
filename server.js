@@ -12,7 +12,7 @@ var fileUpload = require('express-fileupload');
 var busboy = require('busboy');
 var url = require('url');
 var app      = express();
-var port     = process.env.PORT || 8000;
+var port     = process.env.PORT || 8080;
 
 var passport = require('passport');
 var flash    = require('connect-flash');

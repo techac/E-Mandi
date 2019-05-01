@@ -31,8 +31,11 @@ module.exports = function(app, passport, url, path){
 			connection.query("SELECT * FROM Retailer INNER JOIN users ON users.id=Retailer.id",function(err,result){
 				if(err) throw err;
 				results = results.concat(result);
-				console.log(results);
-				res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
+				connection.query("SELECT * FROM Farmer INNER JOIN users on users.id=Farmer.id",function(err, reuslt){
+					if(err) throw err;
+					res.render('index.ejs',{authenticated:isLoggedIn,results: results,req:req }); // load the index.ejs file
+				});
+				
 			});
 		});
 		
