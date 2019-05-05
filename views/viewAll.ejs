@@ -227,7 +227,7 @@ a.button:hover{
                           <span class="price">₹<%= results[i].price %></span><br>
                           <span class="price"> <%= results[i].state %></span>
                           <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-                            <input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
+                            <input type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
                             <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
                           </form>
                           </figure>
@@ -241,7 +241,7 @@ a.button:hover{
                           <span class="price">₹<%= results[i].price %></span><br>
                           <span class="price"> <%= results[i].state %></span>
                           <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-                            <input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
+                            <input type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
                             <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
                           </form>
                           </figure>
@@ -255,7 +255,7 @@ a.button:hover{
                               <span class="price">₹<%= results[i].price %></span><br>
                               <span class="price"> <%= results[i].state %></span>
                               <form action="/makeTransaction/<%= results[i].title %>/<%= results[i].username %>/<%= results[i].role %>/<%= results[i].price %>/<%= results[i].image %>" method="POST">
-                                <input type="number" name="quantity" max="<%= results[i].stock %>" min="1">
+                                <input type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
                                 <button type="submit" class="btn btn-success">Add to cart<span><i class="ion-ios-add ml-1"></i></span></butoon> 
                               </form>
                               </figure>

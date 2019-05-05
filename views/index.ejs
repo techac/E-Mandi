@@ -10,8 +10,8 @@
       <link href="https://fonts.googleapis.com/css?family=Questrial" rel="stylesheet">
 
     <link rel="stylesheet" href="css/open-iconic-bootstrap.min.css">
-    <link rel="stylesheet" href="css/animate.css">
-    
+		<link rel="stylesheet" href="css/animate.css">
+		
     <link rel="stylesheet" href="css/owl.carousel.min.css">
     <link rel="stylesheet" href="css/owl.theme.default.min.css">
     <link rel="stylesheet" href="css/magnific-popup.css">
@@ -146,8 +146,8 @@
 														<h3><a href="#"> <%= results[i].title %></a></h3>
 														<div class="d-flex">
 															<div class="pricing">
-																<p class="price"><span class="price-sale">₹<%= results[i].price %></span></p>
-																<p class="price"><span class="price-sale">Qty: <%= results[i].stock %></span></p>
+																<p class="price"><span class="price-sale">₹<%= results[i].price %>/kg</span></p>
+																<p class="price"><span class="price-sale">Qty: <%= results[i].stock %>kgs</span></p>
 
 															</div>
 															<a href="/updateListing/<%= results[i].title %>/<%= results[i].price %>/<%= results[i].stock %>"><button class="btn btn-success btn-lg">Update</button></a>
@@ -230,7 +230,8 @@
     	</div>
     	<div class="container-fluid">
     		<div class="row">
-					<% for(var i=0;i< 5;i++){ %>
+					
+					<% for(var i=0;i< results.length;i++){ %>
 						<% if(req.user == undefined){ %>
 							<div class="col-sm col-md-6 col-lg ftco-animate">
 								<div class="product">
@@ -271,7 +272,7 @@
                                                 <label>Quantity</label>
 
                                                 <div >
-                                                    <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+                                                    <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
 												<button type="submit" class="btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button> 
                                                 </div>
 												
@@ -306,7 +307,7 @@
                                                         <div>
                                     
                                                         
-                                                            <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+                                                            <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
 														<button type="submit" class="row1 btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button>
                                                         </div>
 														 
@@ -338,7 +339,7 @@
 
 															<div >
                                                             
-                                                                <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>">
+                                                                <input style="width:50px" type="number" name="quantity" max="<%= results[i].stock %>" min="1" required>
 															<button type="submit" class="row1 btn btn-success" style="margin-left: 10%;">Add to cart<span><i class="ion-ios-add ml-1"></i></span></button> 
                                                             </div>
 														</form>
@@ -756,9 +757,9 @@
             	<h2 class="ftco-heading-2">Have a Questions?</h2>
             	<div class="block-23 mb-3">
 	              <ul>
-	                <li><span class="icon icon-map-marker"></span><span class="text">203 Fake St. Mountain View, San Francisco, California, USA</span></li>
-	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+2 392 3929 210</span></a></li>
-	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">info@yourdomain.com</span></a></li>
+	                <li><span class="icon icon-map-marker"></span><span class="text">IIIT Allahabad, Prayagraj</span></li>
+	                <li><a href="#"><span class="icon icon-phone"></span><span class="text">+91 805 8281 594</span></a></li>
+	                <li><a href="#"><span class="icon icon-envelope"></span><span class="text">iit2017093@iiita.ac.in</span></a></li>
 	              </ul>
 	            </div>
             </div>
